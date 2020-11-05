@@ -1,0 +1,32 @@
+.SiteLayout{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    // background: url("./../images/pngegg.png") bottom left / 250px no-repeat, url("./../images/pngegg.png") top right / 250px no-repeat;
+    background: url("./../images/background.svg") no-repeat;
+    &-header {
+        padding: 5rem 0 3rem;
+    }
+    &-logo{
+        margin: auto;
+        border-radius: 100%;
+        width: 72px;
+        height: 72px;
+    }
+    &-footer{
+        margin-top: auto;
+        text-align: center;
+        font-size: .8rem;
+        color: var(--snColorTextAlt);
+    }
+    &-main{
+        
+    }
+}
+
+.MainContainer{
+    max-width: $maxWidth;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+}
