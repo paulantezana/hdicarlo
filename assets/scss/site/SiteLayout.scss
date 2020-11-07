@@ -1,26 +1,30 @@
 .SiteLayout{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    // background: url("./../images/pngegg.png") bottom left / 250px no-repeat, url("./../images/pngegg.png") top right / 250px no-repeat;
-    background: url("./../images/background.svg") no-repeat;
-    &-header {
-        padding: 5rem 0 3rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: "layoutHeader"
+                          "layoutMain"
+                          "layoutFooter";
+    @include from(l){
+        grid-template-columns: 420px 1fr;
+        grid-template-areas: "layoutHeader layoutMain"
+                                "layoutHeader layoutFooter";
     }
-    &-logo{
-        margin: auto;
-        border-radius: 100%;
-        width: 72px;
-        height: 72px;
+    &-header {
+        grid-area: layoutHeader;
+        @include to(l){
+            display: none;
+        }
     }
     &-footer{
         margin-top: auto;
         text-align: center;
         font-size: .8rem;
         color: var(--snColorTextAlt);
+        grid-area: layoutFooter;
     }
     &-main{
-        
+        padding: 5rem 0 3rem;
+        grid-area: layoutMain;
     }
 }
 
@@ -29,4 +33,39 @@
     margin-left: auto;
     margin-right: auto;
     padding: 1rem;
+}
+
+.SiteHeader{
+    height: 100vh;
+    position: relative;
+    &-bg{
+        width: 100%;
+        height: 100%;
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    &-content{
+        background: rgba(#000000,.7);
+        color: white;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 4rem 1rem;
+
+        // ---
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &-logo{
+        border-radius: 100%;
+        width: 100px;
+        height: 100px;
+    }
 }

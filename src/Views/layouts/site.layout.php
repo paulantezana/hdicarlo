@@ -24,8 +24,15 @@
 
 <body>
     <div class="SiteLayout" id="SiteLayout">
-        <div class="SiteLayout-header">
-            <img src="<?= URL_PATH ?>/assets/images/icon/144.png" class="SiteLayout-logo" alt="Logo">
+        <div class="SiteLayout-header SiteHeader">
+            <div class="SiteHeader-bg">
+                <img src="<?= URL_PATH ?>/assets/images/background.jpg" alt="fondo">
+            </div>
+            <div class="SiteHeader-content">
+                <img src="<?= URL_PATH ?>/assets/images/icon/144.png" class="SiteHeader-logo" alt="Logo">
+                <h1><?= APP_NAME ?></h1>
+                <p><?= APP_DESCRIPTION ?></p>
+            </div>
         </div>
         <div class="SiteLayout-main">
             <?php echo $content ?>

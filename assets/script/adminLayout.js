@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  SnMenu({
-    menuId: "HeaderMenu",
-    toggleButtonID: "HeaderMenu-toggle",
-    toggleClass: "HeaderMenu-is-show",
-    contextId: "AdminLayout",
-    parentClose: true,
-    menuCloseID: "HeaderMenu-wrapper",
-  });
+  // SnMenu({
+  //   menuId: "HeaderMenu",
+  //   toggleButtonID: "HeaderMenu-toggle",
+  //   toggleClass: "HeaderMenu-is-show",
+  //   contextId: "AdminLayout",
+  //   parentClose: true,
+  //   menuCloseID: "HeaderMenu-wrapper",
+  // });
 
   SnMenu({
     menuId: "AsideMenu",

@@ -17,6 +17,7 @@ let customerState = {
 let customerPValidator;
 
 let exhibitorGlobalMap;
+let exhibitorGlobalMarker;
 
 document.addEventListener("DOMContentLoaded", () => {
   pValidator = new Pristine(document.getElementById("exhibitorForm"));
@@ -164,7 +165,7 @@ function exhibitorClearForm() {
   if (currentForm && exhibitorCode) {
     geoGetCurrentPosition().then(userLocation => {
       drawGoogleMap(userLocation);
-    }).catch(err => toastr.error(err,'Algo salió mal!!'));
+    }).catch(err => toastr.error(err, 'Algo salió mal!!'));
     currentForm.reset();
     exhibitorCode.focus();
   }
@@ -270,7 +271,7 @@ function exhibitorGetById(exhibitorId) {
           let latitude = latLong[0];
           let longitude = latLong[1];
           document.getElementById('exhibitorLatitude').value = latitude;
-          document.getElementById('exhibitorLatitude').value = longitude;
+          document.getElementById('exhibitorLongitude').value = longitude;
           document.getElementById('exhibitorAddress').value = res.result.address;
           setPositionMarker({
             lat: latitude,
@@ -345,7 +346,7 @@ function customerSetLoading(state) {
   }
 }
 
-function customerShowModalCreate(){
+function customerShowModalCreate() {
   customerState.modalType = "create";
   customerClearForm();
   SnModal.open(customerState.modalName);
@@ -415,16 +416,7 @@ function initGoogleMaps() {
   }).catch(err => SnMessage.error({ content: err }));
 }
 
-function drawGoogleMapExhibitorGlobal(userLocation){
-  exhibitorGlobalMap = new google.maps.Map(document.getElementById('exhibitorGlobalMap'), {
-    center: userLocation,
-    zoom: 17,
-    rotateControl: false,
-    fullscreenControl: false,
-    streetViewControl: false,
-    mapTypeControl: false,
-  });
-}
+
 
 function drawGoogleMap(userLocation) {
   map = new google.maps.Map(document.getElementById('googleMap'), {
@@ -504,9 +496,53 @@ function setPositionMarker(location) {
   }, 1000);
 }
 
+// GLOBAL
+function drawGoogleMapExhibitorGlobal(userLocation) {
+  exhibitorGlobalMap = new google.maps.Map(document.getElementById('exhibitorGlobalMap'), {
+    center: userLocation,
+    zoom: 17,
+    rotateControl: false,
+    fullscreenControl: false,
+    streetViewControl: false,
+    mapTypeControl: false,
+  });
+
+  exhibitorGlobalMarker = new google.maps.Marker({
+    position: userLocation,
+    draggable: true,
+    animation: google.maps.Animation.DROP,
+    map: exhibitorGlobalMap
+  });
+}
+
+function setPositionMarkerGlobal(location) {
+  let setPositionInterval = setInterval(() => {
+    if (exhibitorGlobalMap && exhibitorGlobalMarker) {
+      clearInterval(setPositionInterval);
+      let newLatLng = new google.maps.LatLng(location.lat, location.lng);
+      exhibitorGlobalMap.setCenter(newLatLng);
+      exhibitorGlobalMap.setZoom(17);
+      exhibitorGlobalMarker.setPosition(newLatLng);
+    }
+  }, 1000);
+}
+
 // MAINTENANCE
-function exhibitorMaintenanceShowModal(){
-  // customerState.modalType = "create";
-  // customerClearForm();
+function exhibitorMaintenanceShowModal() {
   SnModal.open('exhibitorMaintenanceModalForm');
+}
+
+function exhibitorSetPositionMpas(location) {
+  let latLong = location.split(',');
+  if (latLong.length > 0) {
+    let latitude = latLong[0];
+    let longitude = latLong[1];
+
+    setPositionMarkerGlobal({
+      lat: latitude,
+      lng: longitude,
+    });
+  } else {
+    SnMessage.error({ content: 'Ubicación mal establecida' });
+  }
 }

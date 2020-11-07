@@ -22,9 +22,11 @@
                     <span class="SnControl-suffix fas fa-eye togglePassword"></span>
                 </div>
             </div>
-
-            <button type="submit" class="SnBtn block primary SnMb-5" name="commit">Cambiar contraseña</button>
+            
+            <button type="submit" class="SnBtn block primary SnMb-5" name="commit"><i class="fas fa-key SnMr-2"></i>Cambiar contraseña</button>
         </form>
     <?php endif; ?>
-    <a href="<?= URL_PATH ?>/user/login" class="SnBtn block">Login</a>
+    <p style="text-align: center">
+        <a href="<?= URL_PATH ?>/user/login">Iniciar sesión</a>
+    </p>
 </div>

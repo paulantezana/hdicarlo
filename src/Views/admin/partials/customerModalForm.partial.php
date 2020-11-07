@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="SnForm-item">
-                    <label for="customerFiscalAddress" class="SnForm-label">Nombre completo</label>
+                    <label for="customerFiscalAddress" class="SnForm-label">Dirección fiscal</label>
                     <div class="SnControl-wrapper">
                         <i class="far fa-user SnControl-prefix"></i>
                         <input type="text" class="SnForm-control SnControl" id="customerFiscalAddress">
@@ -84,52 +84,28 @@
     function CustomerSearchDocument() {
         let searchIdentityDocumentCode = document.getElementById('customerIdentityDocumentCode').value;
         let searchDocumentNumber = document.getElementById('customerDocumentNumber').value
-        if (searchIdentityDocumentCode == 1) {
-            SearchDocumentChangeState(true);
-            RequestApi.fetchOut('https://buscaruc.com/consultas/api.php?ruc=' + searchDocumentNumber)
-                .then((res) => {
-                    if (res.success) {
-                        // document.getElementById('customerIdentityDocumentCode').value = res.result.identity_document_code;
-                        // document.getElementById('customerDocumentNumber').value = res.result.document_number;
-                        // document.getElementById('customerSocialReason').value = res.result.social_reason;
-                        // document.getElementById('customerCommercialReason').value = res.result.commercial_reason;
-                        // document.getElementById('customerFiscalAddress').value = res.result.fiscal_address;
-                        // document.getElementById('customerEmail').value = res.result.email;
-                        // document.getElementById('customerTelephone').value = res.result.telephone;
-                        // document.getElementById('customerId').value = res.result.customer_id;
-                    } else {
-                        SnModal.error({
-                            title: "Algo salió mal",
-                            content: res.message
-                        });
-                    }
-                })
-                .finally((e) => {
-                    SearchDocumentChangeState(false);
-                });
-        } else if (searchIdentityDocumentCode == 6) {
-            SearchDocumentChangeState(true);
-            RequestApi.fetchOut('https://buscaruc.com/consultas/dni.php?dni=' + searchDocumentNumber)
-                .then((res) => {
-                    if (res.success) {
-                        // document.getElementById('customerIdentityDocumentCode').value = res.result.identity_document_code;
-                        // document.getElementById('customerDocumentNumber').value = res.result.document_number;
-                        // document.getElementById('customerSocialReason').value = res.result.social_reason;
-                        // document.getElementById('customerCommercialReason').value = res.result.commercial_reason;
-                        // document.getElementById('customerFiscalAddress').value = res.result.fiscal_address;
-                        // document.getElementById('customerEmail').value = res.result.email;
-                        // document.getElementById('customerTelephone').value = res.result.telephone;
-                        // document.getElementById('customerId').value = res.result.customer_id;
-                    } else {
-                        SnModal.error({
-                            title: "Algo salió mal",
-                            content: res.message
-                        });
-                    }
-                })
-                .finally((e) => {
-                    SearchDocumentChangeState(false);
-                });
-        }
+
+        SearchDocumentChangeState(true);
+        RequestApi.fetch('/admin/customer/queryDocument', {
+            method: 'POST',
+            body: {
+                documentNumber: searchDocumentNumber,
+                documentType: searchIdentityDocumentCode,
+            }
+        })
+            .then(res => {
+                if (res.success) {
+                    document.getElementById('customerSocialReason').value = res.result.social_reason;
+                    document.getElementById('customerFiscalAddress').value = res.result.full_address;
+                } else {
+                    SnModal.error({
+                        title: "Algo salió mal",
+                        content: res.message
+                    });
+                }
+            })
+            .finally(e => {
+                SearchDocumentChangeState(false);
+            });
     }
 </script>

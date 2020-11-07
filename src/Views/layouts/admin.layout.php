@@ -135,7 +135,12 @@
                         <?php endif; ?>
                         <?php if (menuIsAuthorized('home')) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/admin/census"><i class="fas fa-directions AsideMenu-icon"></i><span>Atencion</span> </a>
+                                <a href="<?= URL_PATH ?>/admin/order"><i class="fas fa-directions AsideMenu-icon"></i><span>Pedido</span> </a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (menuIsAuthorized('home')) : ?>
+                            <li>
+                                <a href="<?= URL_PATH ?>/admin/delivery"><i class="fas fa-shopping-basket AsideMenu-icon"></i><span>Entrega</span> </a>
                             </li>
                         <?php endif; ?>
                         <?php if (menuIsAuthorized('home')) : ?>

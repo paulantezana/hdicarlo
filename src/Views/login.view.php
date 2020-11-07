@@ -16,7 +16,7 @@
                 <span class="SnControl-suffix far fa-eye togglePassword"></span>
             </div>
         </div>
-        <button type="submit" class="SnBtn block primary" name="commit">Login</button>
+        <button type="submit" class="SnBtn block primary" name="commit"><i class="fas fa-sign-in-alt SnMr-2"></i>Iniciar sesión</button>
         <p style="text-align: center">
             <a href="<?= URL_PATH ?>/user/forgot"> ¿Olvido su contraseña?</a>
         </p>

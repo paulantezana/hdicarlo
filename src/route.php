@@ -22,8 +22,13 @@ class Router
                 $this->controller = !empty($url[2]) ? $url[2] : 'Home';
                 $this->group = 'admin/';
             } else {
-                $this->method = 'login';
-                $this->controller = 'User';
+                if (strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json') {
+                    http_response_code(403);
+                    die();
+                } else {
+                    $this->method = 'login';
+                    $this->controller = 'User';
+                }
             }
         } else {
             $this->method = !empty($url[2]) ? $url[2] : 'home';

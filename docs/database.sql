@@ -234,17 +234,72 @@ CREATE TABLE exhibitors(
 
 
 CREATE TABLE exhibitor_states(
-    exhibitor_id INT AUTO_INCREMENT NOT NULL,
+    exhibitor_state_id INT AUTO_INCREMENT NOT NULL,
     is_last TINYINT NOT NULL,
     exhibitor_state VARCHAR(32) DEFAULT '',
     time_of_issue DATETIME,
+
+    exhibitor_id INT NOT NULL,
+    user_id INT NOT NULL,
 
     updated_at DATETIME,
     created_at DATETIME,
     created_user_id INT,
     updated_user_id INT,
     state TINYINT DEFAULT 1,
-    CONSTRAINT pk_exhibitors PRIMARY KEY (exhibitor_id)
+    CONSTRAINT pk_exhibitors PRIMARY KEY (exhibitor_state_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE exhibitor_maintenances(
+    exhibitor_maintenance_id INT AUTO_INCREMENT NOT NULL,
+    time_of_issue DATETIME,
+    
+    exhibitor_id INT NOT NULL,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_exhibitor_maintenances PRIMARY KEY (exhibitor_maintenance_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE orders(
+    order_id INT AUTO_INCREMENT NOT NULL,
+    date_of_issue DATETIME,
+    lat_long VARCHAR(32) DEFAULT '',
+    picture_path VARCHAR(64) DEFAULT '',
+    date_of_delivery DATE,
+    observation VARCHAR(64) DEFAULT '',
+
+    exhibitor_id INT NOT NULL,
+    user_id INT NOT NULL,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_orders PRIMARY KEY (order_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE deliveries(
+    deliveriy_id INT AUTO_INCREMENT NOT NULL,
+    date_of_issue DATETIME,
+    lat_long VARCHAR(32) DEFAULT '',
+    picture_path VARCHAR(64) DEFAULT '',
+    date_of_delivery DATE,
+    observation VARCHAR(64) DEFAULT '',
+
+    exhibitor_id INT NOT NULL,
+    user_id INT NOT NULL,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_deliveries PRIMARY KEY (deliveriy_id)
 ) ENGINE=InnoDB;
 
 -- Attention_type

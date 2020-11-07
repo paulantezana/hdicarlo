@@ -176,3 +176,13 @@
 8Undefined variable: geoLevel1D:\local\hdicarlo\src\Views\admin\exhibitor.view.php42
 2require_once(D:/local/hdicarlo/src/Views/layouts/basic.layout.php): failed to open stream: No such file or directoryD:\local\hdicarlo\src\Core\Controller.php24
 2require_once(D:/local/hdicarlo/src/Views/layouts/basic.layout.php): failed to open stream: No such file or directoryD:\local\hdicarlo\src\Core\Controller.php24
+2Illegal string offset 'customer_id'D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php59
+8Undefined index: exhibitorD:\local\hdicarlo\src\Views\admin\partials\exhibitorDetail.partial.php3
+8Undefined index: codeD:\local\hdicarlo\src\Views\admin\partials\exhibitorDetail.partial.php3
+2htmlspecialchars() expects parameter 1 to be string, array givenD:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php121
+2require(D:/local/hdicarlo/src/Views/exhibitorDetail.partial.php): failed to open stream: No such file or directoryD:\local\hdicarlo\src\Controllers\Helpers\Common.php20
+8Undefined index: exhibitorD:\local\hdicarlo\src\Views\admin\partials\exhibitorDetail.partial.php1
+8Undefined index: documentTypeD:\local\hdicarlo\src\Controllers\admin\CustomerController.php184
+8Undefined index: documentTypeD:\local\hdicarlo\src\Controllers\admin\CustomerController.php184
+8Undefined index: documentNumberD:\local\hdicarlo\src\Controllers\admin\CustomerController.php185
+8Undefined index: SnId_hdcarloD:\local\hdicarlo\src\Controllers\UserController.php330

@@ -1,7 +1,7 @@
 {
-  "short_name": "php-mvc",
-  "name": "php-mvc",
-  "description": "Plataformas de educación online",
+  "short_name": "hdcarlo",
+  "name": "hdcarlo",
+  "description": "Sistema de monitoreo",
   "icons": [
     {
       "src": "./Android/48.png",

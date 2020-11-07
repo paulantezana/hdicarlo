@@ -7,8 +7,7 @@
                 <th>Razón comercial</th>
                 <th>Tamaño</th>
                 <th>Dirección</th>
-                <th>Operativo</th>
-                <th style="width: 100px"></th>
+                <th style="width: 40px"></th>
             </tr>
         </thead>
         <tbody>
@@ -18,31 +17,27 @@
                     <td><?= $row['customer_document_number'] ?></td>
                     <td><?= $row['customer_social_reason'] ?></td>
                     <td><?= $row['size_description'] ?></td>
-                    <td><?= $row['address'] ?></td>
-                    <td><?= $row['operative'] ?></td>
+                    <td><a href="#" onclick="exhibitorSetPositionMpas('<?= $row['lat_long'] ?>')"><?= $row['address'] ?></a></td>
                     <td>
                         <div class="SnTable-action">
-                            <div class="SnBtn icon jsExhibitorOption" title="Editar" onclick="exhibitorShowModalUpdate(<?= $row['exhibitor_id'] ?>)">
-                                <i class="fas fa-edit"></i>
-                            </div>
                             <div class="SnDropdown">
-                                <div class="SnDropdown-toggle SnBtn">
+                                <div class="SnDropdown-toggle SnBtn sm icon">
                                     <i class="fas fa-ellipsis-v"></i>
                                 </div>
                                 <ul class="SnDropdown-list" style="min-width: 300px">
-                                    <li class="SnDropdown-item jsExhibitorOption" style="color: var(--snError);" title="Eliminar" onclick="exhibitorDelete(<?= $row['exhibitor_id'] ?>)">
-                                        <i class="far fa-trash-alt SnMr-2"></i> Eliminar
+                                    <li class="SnDropdown-item jsExhibitorOption" onclick="exhibitorShowModalUpdate(<?= $row['exhibitor_id'] ?>)">
+                                        <i class="fas fa-edit SnMr-2"></i> Editar
                                     </li>
-                                    <li class="SnDropdown-item jsExhibitorOption">
-                                        <i class="fas fa-street-view SnMr-2"></i> Ubicar
-                                    </li>
-                                    <li class="SnDropdown-item jsExhibitorOption">
-                                        <a href="<?= URL_PATH ?>/admin/exhibitor/detail?exhibitorId=<?= $row['exhibitor_id'] ?>">
+                                    <li>
+                                        <a class="SnDropdown-item jsExhibitorOption" href="<?= URL_PATH ?>/admin/exhibitor/detail?exhibitorId=<?= $row['exhibitor_id'] ?>">
                                             <i class="fas fa-angle-double-right SnMr-2"></i> Detalles
                                         </a>
                                     </li>
                                     <li class="SnDropdown-item jsExhibitorOption" onclick="exhibitorMaintenanceShowModal(<?= $row['exhibitor_id'] ?>)">
                                         <i class="fas fa-hammer SnMr-2"></i> Mantenimineto
+                                    </li>
+                                    <li class="SnDropdown-item jsExhibitorOption" style="color: var(--snError);" title="Eliminar" onclick="exhibitorDelete(<?= $row['exhibitor_id'] ?>)">
+                                        <i class="far fa-trash-alt SnMr-2"></i> Eliminar
                                     </li>
                                 </ul>
                             </div>
