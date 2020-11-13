@@ -209,6 +209,18 @@ CREATE TABLE sizes(
     CONSTRAINT pk_sizes PRIMARY KEY (size_id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE exhibitor_states(
+    exhibitor_state_id INT AUTO_INCREMENT NOT NULL,
+    description VARCHAR(64) NOT NULL,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_exhibitor_states PRIMARY KEY (exhibitor_state_id)
+) ENGINE=InnoDB;
+
 CREATE TABLE exhibitors(
     exhibitor_id INT AUTO_INCREMENT NOT NULL,
     code VARCHAR(64) NOT NULL UNIQUE,
@@ -233,21 +245,22 @@ CREATE TABLE exhibitors(
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE exhibitor_states(
-    exhibitor_state_id INT AUTO_INCREMENT NOT NULL,
+CREATE TABLE exhibitor_histories(
+    exhibitor_history_id INT AUTO_INCREMENT NOT NULL,
     is_last TINYINT NOT NULL,
     exhibitor_state VARCHAR(32) DEFAULT '',
     time_of_issue DATETIME,
 
     exhibitor_id INT NOT NULL,
     user_id INT NOT NULL,
+    exhibitor_state_id INT DEFAULT 0,
 
     updated_at DATETIME,
     created_at DATETIME,
     created_user_id INT,
     updated_user_id INT,
     state TINYINT DEFAULT 1,
-    CONSTRAINT pk_exhibitors PRIMARY KEY (exhibitor_state_id)
+    CONSTRAINT pk_exhibitor_histories PRIMARY KEY (exhibitor_history_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE exhibitor_maintenances(

@@ -1,6 +1,8 @@
 const APP = {
-    path: "/hdicarlo",
+    path: "",
 };
+
+navigator.serviceWorker.register(APP.path + '/assets/script/helpers/sw.js');
 
 const codeMessage = {
     200: "El servidor devolvió con éxito los datos solicitados. ",

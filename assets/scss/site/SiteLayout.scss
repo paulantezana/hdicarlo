@@ -23,7 +23,7 @@
         grid-area: layoutFooter;
     }
     &-main{
-        padding: 5rem 0 3rem;
+        padding: 4rem 0 3rem;
         grid-area: layoutMain;
     }
 }
@@ -48,7 +48,8 @@
         }
     }
     &-content{
-        background: rgba(#000000,.7);
+        // background: rgba(#EF403E,.9);
+        background:#EF403E;
         color: white;
 
         position: absolute;
@@ -67,5 +68,14 @@
         border-radius: 100%;
         width: 100px;
         height: 100px;
+    }
+}
+
+.SiteMain{
+    &-logo{
+        border-radius: 100%;
+        width: 72px;
+        height: 72px;
+        margin: auto auto 3rem;
     }
 }

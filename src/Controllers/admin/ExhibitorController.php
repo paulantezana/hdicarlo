@@ -1,7 +1,7 @@
 <?php
 
 require_once(MODEL_PATH . '/Exhibitor.php');
-require_once(MODEL_PATH . '/ExhibitorStates.php');
+require_once(MODEL_PATH . '/ExhibitorHistory.php');
 require_once(MODEL_PATH . '/Size.php');
 require_once(MODEL_PATH . '/Customer.php');
 require_once(MODEL_PATH . '/Country.php');
@@ -9,8 +9,9 @@ require_once(MODEL_PATH . '/IdentityDocumentType.php');
 
 class ExhibitorController extends Controller
 {
-    protected $connection;
-    protected $exhibitorModel;
+    private $connection;
+    private $exhibitorModel;
+    private $exhibitorHistoryModel;
     private $countryModel;
     private $customerModel;
 
@@ -18,7 +19,7 @@ class ExhibitorController extends Controller
     {
         $this->connection = $connection;
         $this->exhibitorModel = new Exhibitor($connection);
-        $this->exhibitorStateModel = new ExhibitorStates($connection);
+        $this->exhibitorHistoryModel = new ExhibitorHistory($connection);
         $this->countryModel = new Country($connection);
         $this->customerModel = new Customer($connection);
     }
@@ -71,6 +72,52 @@ class ExhibitorController extends Controller
         }
     }
 
+    public function monitoring(){
+        try {
+            // $exhibitorId = $_GET['exhibitorId'] ?? 0;
+            // if ($exhibitorId == 0) {
+            //     $this->redirect('/admin');
+            // }
+
+            // $exhibitor = $this->exhibitorModel->getById($exhibitorId);
+            // $customer = $this->customerModel->getById($exhibitor['customer_id']);
+
+            $this->render('admin/exhibitorMonitoring.view.php', [
+
+            ], 'layouts/admin.layout.php');
+        } catch (Exception $e) {
+            $this->render('500.view.php', [
+                'message' => $e->getMessage(),
+            ], 'layouts/admin.layout.php');
+        }
+    }
+    public function getMonitoringData(){
+        $res = new Result();
+        try {
+            $postData = file_get_contents("php://input");
+            $body = json_decode($postData, true);
+
+            if(!isset($body['dateStart'])){
+                throw new Exception('No se especifico la fecha');
+            }
+            if(!isset($body['quantity'])){
+                throw new Exception('No se especifico el número de dias');
+            }
+
+            $exhibitor =  $this->exhibitorModel->getAll();
+            $exhibitorMonitoring =  $this->exhibitorModel->monitoring($body['dateStart'], $body['quantity']);
+
+            $res->result = [
+                'exhibitor' => $exhibitor,
+                'exhibitorMonitoring' => $exhibitorMonitoring,
+            ];
+            $res->success = true;
+        } catch (Exception $e) {
+            $res->message = $e->getMessage();
+        }
+        echo json_encode($res);
+    }
+
     public function states(){
         $res = new Result();
         try {
@@ -80,7 +127,7 @@ class ExhibitorController extends Controller
             $current = isset($body['current']) ? $body['current'] : 1;
             $exhibitorId = $body['exhibitorId'];
 
-            $res->result = $this->exhibitorStateModel->scrollByExhibitorId($exhibitorId, $current);
+            $res->result = $this->exhibitorHistoryModel->scrollByExhibitorId($exhibitorId, $current);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();

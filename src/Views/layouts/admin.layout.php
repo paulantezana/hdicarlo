@@ -127,7 +127,6 @@
             <div id="AsideMenu-wrapper" class="AsideMenu-wrapper">
                 <div class="AsideMenu-container">
                     <ul class="AsideMenu" id="AsideMenu">
-
                         <?php if (menuIsAuthorized('home')) : ?>
                             <li>
                                 <a href="<?= URL_PATH ?>/admin"><i class="fas fa-tachometer-alt AsideMenu-icon"></i><span>Inicio</span> </a>
@@ -165,7 +164,7 @@
                         <?php endif; ?>
                         <?php if (menuIsAuthorized('home')) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/admin/appAuthorization"><i class="fas fa-chart-bar AsideMenu-icon"></i><span>Reporte</span></a>
+                                <a href="<?= URL_PATH ?>/admin/exhibitor/monitoring"><i class="fas fa-desktop AsideMenu-icon"></i><span>Monitoreo</span></a>
                             </li>
                         <?php endif; ?>
                     </ul>

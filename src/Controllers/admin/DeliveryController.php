@@ -2,7 +2,7 @@
 
 require_once MODEL_PATH . '/Delivery.php';
 require_once MODEL_PATH . '/Exhibitor.php';
-require_once MODEL_PATH . '/ExhibitorStates.php';
+require_once MODEL_PATH . '/ExhibitorHistory.php';
 
 class DeliveryController extends Controller
 {
@@ -16,7 +16,7 @@ class DeliveryController extends Controller
         $this->connection = $connection;
         $this->deliveryModel = new Delivery($connection);
         $this->exhibitorModel = new Exhibitor($connection);
-        $this->exhibitorStatesModel = new ExhibitorStates($connection);
+        $this->exhibitorStatesModel = new ExhibitorHistory($connection);
     }
 
     public function home()

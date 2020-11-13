@@ -26,7 +26,7 @@
     <div class="SiteLayout" id="SiteLayout">
         <div class="SiteLayout-header SiteHeader">
             <div class="SiteHeader-bg">
-                <img src="<?= URL_PATH ?>/assets/images/background.jpg" alt="fondo">
+                <!-- <img src="<?= URL_PATH ?>/assets/images/background.jpg" alt="fondo"> -->
             </div>
             <div class="SiteHeader-content">
                 <img src="<?= URL_PATH ?>/assets/images/icon/144.png" class="SiteHeader-logo" alt="Logo">
@@ -35,6 +35,7 @@
             </div>
         </div>
         <div class="SiteLayout-main">
+            <img src="<?= URL_PATH ?>/assets/images/icon/144.png" class="SiteMain-logo" alt="Logo">
             <?php echo $content ?>
         </div>
         <div class="SiteLayout-footer">

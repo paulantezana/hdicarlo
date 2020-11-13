@@ -72,20 +72,29 @@ function saveOrder() {
   order.longitude = document.getElementById('currentLongitude').value;
   order.dateOfDelivery = document.getElementById('orderDateOfDelivery').value;
 
-  exhibitorSetLoading(true);
-  RequestApi.fetch("/admin/order/save", {
-    method: "POST",
-    body: order,
-  })
-    .then((res) => {
-      if (res.success) {
-        SnMessage.success({ content: res.message });
-        clearOrder();
-      } else {
-        SnModal.error({ title: 'Algo salió mal', content: res.message });
-      }
-    })
-    .finally((e) => {
-      exhibitorSetLoading(false);
-    });
+  SnModal.confirm({
+    title: "¿Estás seguro de continuar con el registro?",
+    content: '',
+    okText: "Si",
+    okType: "error",
+    cancelText: "No",
+    onOk() {
+      exhibitorSetLoading(true);
+      RequestApi.fetch("/admin/order/save", {
+        method: "POST",
+        body: order,
+      })
+        .then((res) => {
+          if (res.success) {
+            SnMessage.success({ content: res.message });
+            clearOrder();
+          } else {
+            SnModal.error({ title: 'Algo salió mal', content: res.message });
+          }
+        })
+        .finally((e) => {
+          exhibitorSetLoading(false);
+        });
+    }
+  });
 }

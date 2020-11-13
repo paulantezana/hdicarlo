@@ -1,0 +1,13 @@
+.MonitoringTable{
+    &-active{
+        background: var(--snColor1Lighter2);
+    }
+    &-now{
+        box-shadow: 0 2px var(--snColor2) inset;
+    }
+    th,
+    td{
+        text-align: center;
+        padding: 6px 6px;
+    }
+}

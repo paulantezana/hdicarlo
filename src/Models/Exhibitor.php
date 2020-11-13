@@ -73,6 +73,26 @@ class Exhibitor extends Model
         }
     }
 
+    public function monitoring(string $currentDate,int $days)
+    {
+        try {
+            $endDate = strtotime ('+'.$days.' day' , strtotime ($currentDate));
+			$endDate = date ('Y-m-d',$endDate);
+ 
+            $stmt = $this->db->prepare("SELECT del.*, us.full_name as user_full_name, us.user_name FROM deliveries AS del 
+                                        INNER JOIN users AS us ON del.user_id = us.user_id
+                                        WHERE del.date_of_delivery BETWEEN :startDate AND :endDate");
+            $stmt->bindParam(':startDate', $currentDate);
+            $stmt->bindParam(':endDate', $endDate);
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
+        }
+    }
+
     public function paginate(int $page, int $limit = 10, string $search = '')
     {
         try {
