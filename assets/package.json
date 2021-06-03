@@ -10,14 +10,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "@babel/register": "^7.11.5",
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/register": "^7.13.16",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-babel": "^8.0.0",
-    "gulp-sass": "^4.1.0",
-    "node-sass": "^4.14.1"
+    "gulp-sass": "^4.0.2"
   },
   "browserslist": [
     "last 1 version",
@@ -25,6 +24,7 @@
     "IE 10"
   ],
   "dependencies": {
-    "sedna": "^0.9.6"
+    "gulp-minify": "^3.1.0",
+    "sedna": "^1.0.4"
   }
 }

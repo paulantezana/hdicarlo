@@ -4,16 +4,16 @@
             <i class=" fas fa-list-ul SnMr-2"></i> <strong>Exibidoras</strong>
         </div>
         <div class="SnToolbar-right">
-            <div class="SnBtn jsExhibitorAction" onclick="exhibitorToPrint()" title="Imprimir">
+            <div class="SnBtn lg radio icon SnMr-2 jsExhibitorAction" onclick="exhibitorToPrint()" title="Imprimir">
                 <i class="fas fa-print"></i>
             </div>
-            <div class="SnBtn jsExhibitorAction" onclick="exhibitorToExcel()" title="Exportar">
+            <div class="SnBtn lg radio icon SnMr-2 jsExhibitorAction" onclick="exhibitorToExcel()" title="Exportar">
                 <i class="fas fa-file-excel"></i>
             </div>
-            <div class="SnBtn jsExhibitorAction" onclick="exhibitorList()" title="Actualizar">
+            <div class="SnBtn lg radio icon SnMr-2 jsExhibitorAction" onclick="exhibitorList()" title="Actualizar">
                 <i class="fas fa-sync-alt"></i>
             </div>
-            <div class="SnBtn primary jsExhibitorAction" onclick="exhibitorShowModalCreate()" title="Nuevo">
+            <div class="SnBtn lg radio primary jsExhibitorAction" onclick="exhibitorShowModalCreate()" title="Nuevo">
                 <i class="fas fa-plus SnMr-2"></i> Nuevo
             </div>
         </div>
@@ -39,9 +39,6 @@
                         <label for="filterLocal1" class="SnForm-label">Departamento</label>
                         <select id="filterLocal1" class="SnForm-control">
                             <option value="">Seleccionar</option>
-                            <?php foreach ($parameter['geoLevel1'] as $row): ?>
-                                <option value="<?= $row['geo_level_1_id'] ?>"><?= $row['name'] ?></option>
-                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="SnForm-item required">
@@ -80,7 +77,7 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/script/exhibitor.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/exhibitor.js"></script>
 
 <div class="SnModal-wrapper" data-modal="exhibitorModalForm">
     <div class="SnModal">

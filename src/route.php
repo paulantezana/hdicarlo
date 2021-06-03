@@ -16,17 +16,43 @@ class Router
     {
         $url = explode('/', URL);
 
-        if(preg_match('/^\/admin/', URL)){
-            if(isset($_SESSION[SESS_KEY]) && isset($_SESSION[SESS_USER])){
-                $this->method = !empty($url[3]) ? $url[3] : 'home';
-                $this->controller = !empty($url[2]) ? $url[2] : 'Home';
-                $this->group = 'admin/';
+        if (preg_match('/^\/admin/', URL)) {
+            if (isset($_SESSION[SESS_KEY]) && isset($_SESSION[SESS_USER])) {
+                if (($_SESSION[SESS_USER]['company_id'] ?? 0) > 0) {
+                    $this->method = !empty($url[3]) ? $url[3] : 'home';
+                    $this->controller = !empty($url[2]) ? $url[2] : 'Home';
+                    $this->group = 'admin/';
+                } else {
+                    $this->controller = 'Page';
+                    $this->method = 'error403';
+                    $this->group = '';
+                }
             } else {
                 if (strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json') {
                     http_response_code(403);
                     die();
                 } else {
                     $this->method = 'login';
+                    $this->controller = 'User';
+                }
+            }
+        } else if (preg_match('/^\/inner/', URL)) {
+            if (isset($_SESSION[SESS_KEY]) && isset($_SESSION[SESS_USER])) {
+                if (($_SESSION[SESS_USER]['is_inner'] ?? 0) == 1) {
+                    $this->method = !empty($url[3]) ? $url[3] : 'home';
+                    $this->controller = !empty($url[2]) ? $url[2] : 'Inner';
+                    $this->group = 'inner/';
+                } else {
+                    $this->controller = 'Page';
+                    $this->method = 'error403';
+                    $this->group = '';
+                }
+            } else {
+                if (strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json') {
+                    http_response_code(403);
+                    die();
+                } else {
+                    $this->method = 'innerLogin';
                     $this->controller = 'User';
                 }
             }

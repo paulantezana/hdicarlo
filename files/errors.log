@@ -186,3 +186,73 @@
 8Undefined index: documentTypeD:\local\hdicarlo\src\Controllers\admin\CustomerController.php184
 8Undefined index: documentNumberD:\local\hdicarlo\src\Controllers\admin\CustomerController.php185
 8Undefined index: SnId_hdcarloD:\local\hdicarlo\src\Controllers\UserController.php330
+2021-06-02 22:40:30: 2 require_once(D:/local/hdicarlo/src/Models/Company.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(3)
+2021-06-02 22:42:20: 2 require_once(D:/local/hdicarlo/src/Models/TravelRouteScale.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\PageController.php(4)
+2021-06-02 22:42:24: 2 require_once(D:/local/hdicarlo/src/Models/TravelRouteScale.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\PageController.php(4)
+2021-06-02 22:47:42: 2 require_once(D:/local/hdicarlo/src/Models/Company.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(3)
+2021-06-02 22:47:45: 2 require_once(D:/local/hdicarlo/src/Models/Company.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(3)
+2021-06-02 22:48:21: 2 require_once(D:/local/hdicarlo/src/Models/UserOffice.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(10)
+2021-06-02 22:48:24: 2 require_once(D:/local/hdicarlo/src/Models/UserOffice.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(10)
+2021-06-02 22:48:24: 2 require_once(D:/local/hdicarlo/src/Models/UserOffice.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(10)
+2021-06-02 22:48:25: 2 require_once(D:/local/hdicarlo/src/Models/UserOffice.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(10)
+2021-06-02 22:48:25: 2 require_once(D:/local/hdicarlo/src/Models/UserOffice.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(10)
+2021-06-02 22:51:26: 2 require_once(D:/local/hdicarlo/src/Helpers/TokenSign.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\UserController.php(11)
+2021-06-02 23:20:48: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-02 23:24:08: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-02 23:26:40: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-02 23:48:51: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(7)
+2021-06-02 23:48:59: 2 require_once(D:/local/hdicarlo/src/Views/layouts/basic.layout.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(59)
+2021-06-03 07:04:23: 2 require_once(D:/local/hdicarlo/src/Views/layouts/basic.layout.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(59)
+2021-06-03 07:14:11: 8 Undefined index: identityDocumentId
+D:\local\hdicarlo\src\Controllers\admin\UserController.php(126)
+2021-06-03 07:14:32: 8 Undefined index: identityDocumentId
+D:\local\hdicarlo\src\Controllers\admin\UserController.php(126)
+2021-06-03 07:16:12: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(7)
+2021-06-03 07:44:42: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(7)
+2021-06-03 07:53:46: 2 require(D:/local/hdicarlo/src/Views/admin/company.view.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-03 07:56:17: 8 Undefined index: documentTypeId
+D:\local\hdicarlo\src\Controllers\PageController.php(82)
+2021-06-03 08:00:18: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(7)
+2021-06-03 08:00:23: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(7)
+2021-06-03 08:01:42: 8 Undefined index: geoLevel1
+D:\local\hdicarlo\src\Views\admin\exhibitor.view.php(42)
+2021-06-03 08:22:34: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:34: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)

@@ -22,7 +22,7 @@ class HomeController extends Controller
     public function home()
     {
         try {
-            $userCount = $this->userModel->count();
+            $userCount = 0; //$this->userModel->count();
             $exhibitorCount = $this->exhibitorModel->count();
             $customerCount = $this->customerModel->count();
 
@@ -30,6 +30,18 @@ class HomeController extends Controller
                 'userCount' => $userCount,
                 'exhibitorCount' => $exhibitorCount,
                 'customerCount' => $customerCount,
+            ], 'layouts/admin.layout.php');
+        } catch (Exception $e) {
+            $this->render('500.view.php', [
+                'message' => $e->getMessage(),
+            ], 'layouts/admin.layout.php');
+        }
+    }
+
+    public function help()
+    {
+        try {
+            $this->render('help.view.php', [
             ], 'layouts/admin.layout.php');
         } catch (Exception $e) {
             $this->render('500.view.php', [

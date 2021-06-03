@@ -4,16 +4,16 @@
             <i class=" fas fa-list-ul SnMr-2"></i> <strong>USUARIOS</strong>
         </div>
         <div class="SnToolbar-right">
-            <div class="SnBtn jsCustomerAction" onclick="customerToPrint()" title="Imprimir">
+            <div class="SnBtn lg radio icon SnMr-2 jsCustomerAction" onclick="customerToPrint()" title="Imprimir">
                 <i class="fas fa-print"></i>
             </div>
-            <div class="SnBtn jsCustomerAction" onclick="customerToExcel()" title="Exportar">
+            <div class="SnBtn lg radio icon SnMr-2 jsCustomerAction" onclick="customerToExcel()" title="Exportar">
                 <i class="fas fa-file-excel"></i>
             </div>
-            <div class="SnBtn jsCustomerAction" onclick="customerList()" title="Actualizar">
+            <div class="SnBtn lg radio icon SnMr-2 jsCustomerAction" onclick="customerList()" title="Actualizar">
                 <i class="fas fa-sync-alt"></i>
             </div>
-            <div class="SnBtn primary jsCustomerAction" onclick="customerShowModalCreate()" title="Nuevo">
+            <div class="SnBtn lg radio primary jsCustomerAction" onclick="customerShowModalCreate()" title="Nuevo">
                 <i class="fas fa-plus SnMr-2"></i> Nuevo
             </div>
         </div>
@@ -29,6 +29,6 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/script/customer.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/customer.js"></script>
 
 <?php require_once (__DIR__ . '/partials/customerModalForm.partial.php') ?>

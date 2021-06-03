@@ -4,7 +4,7 @@ require_once(MODEL_PATH . '/Exhibitor.php');
 require_once(MODEL_PATH . '/ExhibitorHistory.php');
 require_once(MODEL_PATH . '/Size.php');
 require_once(MODEL_PATH . '/Customer.php');
-require_once(MODEL_PATH . '/Country.php');
+require_once(MODEL_PATH . '/GeoLocation.php');
 require_once(MODEL_PATH . '/IdentityDocumentType.php');
 
 class ExhibitorController extends Controller
@@ -12,7 +12,7 @@ class ExhibitorController extends Controller
     private $connection;
     private $exhibitorModel;
     private $exhibitorHistoryModel;
-    private $countryModel;
+    private $geoLocationModel;
     private $customerModel;
 
     public function __construct(PDO $connection)
@@ -20,7 +20,7 @@ class ExhibitorController extends Controller
         $this->connection = $connection;
         $this->exhibitorModel = new Exhibitor($connection);
         $this->exhibitorHistoryModel = new ExhibitorHistory($connection);
-        $this->countryModel = new Country($connection);
+        $this->geoLocationModel = new GeoLocation($connection);
         $this->customerModel = new Customer($connection);
     }
 
@@ -34,12 +34,10 @@ class ExhibitorController extends Controller
             $identityDocumentTypeModel = new IdentityDocumentType($this->connection);
             $identityDocumentType = $identityDocumentTypeModel->getAll();
 
-            $geoLevel1 = $this->countryModel->listGeoLevel1(1);
             $customer = $this->customerModel->getAll();
 
             $this->render('admin/exhibitor.view.php', [
                 'size' => $size,
-                'geoLevel1' => $geoLevel1,
                 'customer' => $customer,
                 'identityDocumentType' => $identityDocumentType,
             ], 'layouts/admin.layout.php');

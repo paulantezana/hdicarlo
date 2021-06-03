@@ -1,0 +1,18 @@
+.TableFooter{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @include from(m){
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    &-center{
+        margin-top: 6px;
+    }
+    &-right,
+    &-left{
+        span{
+            color: var(--snColor1Dark);
+        }
+    }
+}

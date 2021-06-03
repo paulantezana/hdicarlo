@@ -39,8 +39,9 @@ class CustomerController extends Controller
             $page = htmlspecialchars(isset($_GET['page']) ? $_GET['page'] : 1);
             $limit = htmlspecialchars(isset($_GET['limit']) ? $_GET['limit'] : 10);
             $search = htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '');
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
-            $customer = $this->customerModel->paginate($page, $limit, $search);
+            $customer = $this->customerModel->paginateByCompanyId($companyId, $page, $limit, $search);
 
             $res->view = $this->render('admin/partials/customerTable.php', [
                 'customer' => $customer,
@@ -74,8 +75,9 @@ class CustomerController extends Controller
         try {
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
-            $res->result = $this->customerModel->searchBySocialReason($body['search']);
+            $res->result = $this->customerModel->searchBySocialReason($body['search'], $companyId);
             $res->success = true;
         } catch (Exception $e) {
             $res->message = $e->getMessage();
@@ -90,6 +92,7 @@ class CustomerController extends Controller
             // authorization($this->connection, 'cliente', 'crear');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
             $validate = $this->validateInput($body);
             if (!$validate->success) {
@@ -98,12 +101,13 @@ class CustomerController extends Controller
 
             $res->result = $this->customerModel->insert([
                 'documentNumber'=> htmlspecialchars($body['documentNumber']),
-                'identityDocumentCode'=> htmlspecialchars($body['identityDocumentCode']),
+                'identityDocumentId'=> htmlspecialchars($body['identityDocumentId']),
                 'socialReason'=> htmlspecialchars($body['socialReason']),
                 'commercialReason'=> htmlspecialchars($body['commercialReason']),
                 'fiscalAddress'=> htmlspecialchars($body['fiscalAddress']),
                 'email'=> htmlspecialchars($body['email']),
                 'telephone'=> htmlspecialchars($body['telephone']),
+                'companyId'=> $companyId,
             ], $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
@@ -129,7 +133,7 @@ class CustomerController extends Controller
             $currentDate = date('Y-m-d H:i:s');
             $this->customerModel->updateById($body['customerId'], [
                 'document_number'=> htmlspecialchars($body['documentNumber']),
-                'identity_document_code'=> htmlspecialchars($body['identityDocumentCode']),
+                'identity_document_id'=> htmlspecialchars($body['identityDocumentId']),
                 'social_reason'=> htmlspecialchars($body['socialReason']),
                 'commercial_reason'=> htmlspecialchars($body['commercialReason']),
                 'fiscal_address'=> htmlspecialchars($body['fiscalAddress']),
@@ -172,84 +176,13 @@ class CustomerController extends Controller
         echo json_encode($res);
     }
 
-    public function queryDocument()
-    {
-        $res = new Result();
-        try {
-            // authorization($this->connection, 'cliente', 'eliminar');
-            $postData = file_get_contents('php://input');
-            $body = json_decode($postData, true);
-
-            // $currentDate = date('Y-m-d H:i:s');
-            $documentType = $body['documentType'];
-            $documentNumber = $body['documentNumber'];
-
-            if($documentType == '6' || $documentType == '1'){
-                $token = 'eyJ1c2VySWQiOjEsInVzZXJUb2tlbklkIjoxfQ.KEqxZNc0_PqcsJj786nZC1Knh8R52fUehftszS5x9vhGbrmTz-66DJXfVWgyo3jxKva35kHOuEZwqOb02Ysa7XARgNbtVI--MJsPe_6xl_kQaN6vrf731B7-8qxkrNTUU8s7yChDOCKmoQNVAFOwNIEz7TH71zgMw6SXZoIf1GA';
-                if($documentType == 6){
-                    $url = 'https://ruc.paulantezana.com/api/v1/ruc';
-                    $data = [
-                        'ruc' => $documentNumber,
-                        'token' => $token,
-                    ];
-                } else {
-                    $url = 'https://ruc.paulantezana.com/api/v1/dni';
-                    $data = [
-                        'dni' => $documentNumber,
-                        'token' => $token,
-                    ];
-                }
-
-                $curl = curl_init();
-                curl_setopt_array($curl, array(
-                  CURLOPT_URL => $url,
-                  CURLOPT_RETURNTRANSFER => true,
-                  CURLOPT_ENCODING => "",
-                //   CURLOPT_MAXREDIRS => 10,
-                //   CURLOPT_TIMEOUT => 0,
-                //   CURLOPT_FOLLOWLOCATION => true,
-                //   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                  CURLOPT_CUSTOMREQUEST => "POST",
-                  CURLOPT_POSTFIELDS => json_encode($data),
-                ));
-
-                $response = curl_exec($curl);
-                if (curl_errno($curl)) {
-                    throw new Exception(curl_error($curl));
-                }
-    
-                $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-                curl_close($curl);
-
-                if ($statusCode != 200) {
-                    throw new Exception('Curl status Code: ' . $statusCode);
-                }
-
-                $dataResponse = json_decode($response,true);
-                if(!($dataResponse['success'] == true)){
-                    throw new Exception($dataResponse['message']);
-                }
-
-                $res->result = $dataResponse['result'];
-            } else {
-                throw new Exception('Documento no soportado');
-            }
-           
-            $res->success = true;
-            $res->message = 'Busqueda exitosa';
-        } catch (Exception $e) {
-            $res->message = $e->getMessage();
-        }
-        echo json_encode($res);
-    }
-
     public function validateInput($body, $type = 'create')
     {
         $res = new Result();
         $res->success = true;
 
         if ($type == 'create' || $type == 'update') {
-            if (($body['identityDocumentCode'] ?? '') == '') {
+            if (($body['identityDocumentId'] ?? '') == '') {
                 $res->message .= 'Falta especificar el tipo de documento | ';
                 $res->success = false;
             }

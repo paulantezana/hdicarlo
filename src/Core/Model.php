@@ -46,6 +46,7 @@ class Model
                 'pages' => $totalPages,
                 'limit' => $limit,
                 'data' => $data,
+                'total' => $totalRows,
             ];
         } catch (Exception $e) {
             throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
@@ -121,11 +122,11 @@ class Model
 
             $stmt = $this->db->prepare($sql);
 
-            foreach ($data as $key => $value) {
-                if (gettype($value) === 'boolean') {
-                    $stmt->bindValue(":{$key}", $value, PDO::PARAM_BOOL);
+            foreach ($data as $key => $rowValue) {
+                if (gettype($rowValue) === 'boolean') {
+                    $stmt->bindValue(":{$key}", $rowValue, PDO::PARAM_BOOL);
                 } else {
-                    $stmt->bindValue(":{$key}", $value);
+                    $stmt->bindValue(":{$key}", $rowValue);
                 }
             }
             $stmt->bindParam(":{$this->tableID}", $id);
@@ -140,7 +141,7 @@ class Model
         }
     }
 
-    public function updateBy(string $columnName, $value, array $data)
+    public function updateBy(string $columnName, $columnValue, array $data)
     {
         try {
             $sql = "UPDATE {$this->table} SET ";
@@ -148,7 +149,7 @@ class Model
                 $sql .= "$key = :$key, ";
             }
             $sql = trim(trim($sql), ',');
-            $sql .= " WHERE $columnName = :$columnName";
+            $sql .= " WHERE {$columnName} = :{$columnName}";
 
             $stmt = $this->db->prepare($sql);
 
@@ -159,12 +160,12 @@ class Model
                     $stmt->bindValue(":{$key}", $rowValue);
                 }
             }
-            $stmt->bindParam(":{$columnName}", $value);
+            $stmt->bindParam(":{$columnName}", $columnValue);
 
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
             }
-            return $value;
+            return $columnValue;
         } catch (Exception $e) {
             throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
         }
@@ -173,7 +174,7 @@ class Model
     public function searchBy(string $columnName, string $search)
     {
         try {
-            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE $columnName LIKE :$columnName  LIMIT 8");
+            $stmt = $this->db->prepare("SELECT * FROM {$this->table} WHERE {$columnName} LIKE :{$columnName}  LIMIT 8");
             $stmt->bindValue(":{$columnName}", '%' . $search . '%');
 
             if (!$stmt->execute()) {

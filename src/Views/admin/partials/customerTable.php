@@ -12,66 +12,89 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($parameter['customer']['data'] as $row) : ?>
+            <?php if (count($parameter['customer']['data']) >= 1) : foreach ($parameter['customer']['data'] as $row) : ?>
+                    <tr>
+                        <td><?= $row['identity_document_description'] ?>: <?= $row['document_number'] ?></td>
+                        <td><?= $row['social_reason'] ?></td>
+                        <td><?= $row['commercial_reason'] ?></td>
+                        <td><?= $row['fiscal_address'] ?></td>
+                        <td><?= $row['email'] ?></td>
+                        <td><?= $row['telephone'] ?></td>
+                        <td>
+                            <div class="SnTable-action">
+                                <div class="SnBtn icon radio jsCustomerOption" title="Eliminar" onclick="customerDelete(<?= $row['customer_id'] ?>)">
+                                    <i class="far fa-trash-alt"></i>
+                                </div>
+                                <div class="SnBtn icon radio jsCustomerOption" title="Editar" onclick="customerShowModalUpdate(<?= $row['customer_id'] ?>)">
+                                    <i class="fas fa-edit"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach;
+            else : ?>
                 <tr>
-                    <td><?= $row['identity_document_description'] ?>: <?= $row['document_number'] ?></td>
-                    <td><?= $row['social_reason'] ?></td>
-                    <td><?= $row['commercial_reason'] ?></td>
-                    <td><?= $row['fiscal_address'] ?></td>
-                    <td><?= $row['email'] ?></td>
-                    <td><?= $row['telephone'] ?></td>
-                    <td>
-                        <div class="SnTable-action">
-                            <div class="SnBtn icon jsCustomerOption" title="Eliminar" onclick="customerDelete(<?= $row['customer_id'] ?>)">
-                                <i class="far fa-trash-alt"></i>
-                            </div>
-                            <div class="SnBtn icon jsCustomerOption" title="Editar" onclick="customerShowModalUpdate(<?= $row['customer_id'] ?>)">
-                                <i class="fas fa-edit"></i>
-                            </div>
+                    <td colspan="7">
+                        <div class="SnEmpty">
+                            <img src="<?= URL_PATH . '/assets/images/empty.svg' ?>" alt="">
+                            <div>No hay datos</div>
                         </div>
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
-<?php
-$currentPage = $parameter['customer']['current'];
-$totalPage = $parameter['customer']['pages'];
-$limitPage = $parameter['customer']['limit'];
-$additionalQuery = '';
-$linksQuantity = 3;
 
-if ($totalPage > 1) {
-    $lastPage       = $totalPage;
-    $startPage      = (($currentPage - $linksQuantity) > 0) ? $currentPage - $linksQuantity : 1;
-    $endPage        = (($currentPage + $linksQuantity) < $lastPage) ? $currentPage + $linksQuantity : $lastPage;
+<div class="TableFooter SnMt-3 SnMb-3">
+    <div class="TableFooter-left">Mostrando: <span><?= count($parameter['customer']['data']) ?> de <?= $parameter['customer']['total'] ?></span></div>
+    <div class="TableFooter-center">
+        <?php
+        $currentPage = $parameter['customer']['current'];
+        $totalPage = $parameter['customer']['pages'];
+        $limitPage = $parameter['customer']['limit'];
+        $additionalQuery = '';
+        $linksQuantity = 3;
 
-    $htmlPaginate       = '<nav aria-label="..."><ul class="SnPagination">';
+        if ($totalPage > 1) {
+            $lastPage       = $totalPage;
+            $startPage      = (($currentPage - $linksQuantity) > 0) ? $currentPage - $linksQuantity : 1;
+            $endPage        = (($currentPage + $linksQuantity) < $lastPage) ? $currentPage + $linksQuantity : $lastPage;
 
-    $class      = ($currentPage == 1) ? "disabled" : "";
-    $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . ($currentPage - 1) . '\',\'' . $limitPage . '\')" class="SnPagination-link">Anterior</a></li>';
+            $htmlPaginate       = '<nav aria-label="..."><ul class="SnPagination">';
 
-    if ($startPage > 1) {
-        $htmlPaginate   .= '<li class="SnPagination-item"><a href="#" onclick="customerList(\'1\',\'' . $limitPage . '\')" class="SnPagination-link">1</a></li>';
-        $htmlPaginate   .= '<li class="SnPagination-item disabled"><span class="SnPagination-link">...</span></li>';
-    }
+            $class      = ($currentPage == 1) ? "disabled" : "";
+            $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . ($currentPage - 1) . '\',\'' . $limitPage . '\')" class="SnPagination-link">Anterior</a></li>';
 
-    for ($i = $startPage; $i <= $endPage; $i++) {
-        $class  = ($currentPage == $i) ? "active" : "";
-        $htmlPaginate   .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . $i . '\',\'' . $limitPage . '\')" class="SnPagination-link">' . $i . '</a></li>';
-    }
+            if ($startPage > 1) {
+                $htmlPaginate   .= '<li class="SnPagination-item"><a href="#" onclick="customerList(\'1\',\'' . $limitPage . '\')" class="SnPagination-link">1</a></li>';
+                $htmlPaginate   .= '<li class="SnPagination-item disabled"><span class="SnPagination-link">...</span></li>';
+            }
 
-    if ($endPage < $lastPage) {
-        $htmlPaginate   .= '<li class="SnPagination-item disabled"><span class="SnPagination-link">...</span></li>';
-        $htmlPaginate   .= '<li><a href="#" onclick="customerList(\'' . $lastPage . '\',\'' . $limitPage . '\')" class="SnPagination-link">' . $lastPage . '</a></li>';
-    }
+            for ($i = $startPage; $i <= $endPage; $i++) {
+                $class  = ($currentPage == $i) ? "active" : "";
+                $htmlPaginate   .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . $i . '\',\'' . $limitPage . '\')" class="SnPagination-link">' . $i . '</a></li>';
+            }
 
-    $class      = ($currentPage == $lastPage || $totalPage == 0) ? "disabled" : "";
-    $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . ($currentPage + 1) . '\',\'' . $limitPage . '\')" class="SnPagination-link">Siguiente</a></li>';
+            if ($endPage < $lastPage) {
+                $htmlPaginate   .= '<li class="SnPagination-item disabled"><span class="SnPagination-link">...</span></li>';
+                $htmlPaginate   .= '<li><a href="#" onclick="customerList(\'' . $lastPage . '\',\'' . $limitPage . '\')" class="SnPagination-link">' . $lastPage . '</a></li>';
+            }
 
-    $htmlPaginate       .= '</ul></nav>';
+            $class      = ($currentPage == $lastPage || $totalPage == 0) ? "disabled" : "";
+            $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . ($currentPage + 1) . '\',\'' . $limitPage . '\')" class="SnPagination-link"><i class="fas fa-chevron-right"></i></a></li>';
 
-    echo  $htmlPaginate;
-}
-?>
+            $htmlPaginate       .= '</ul></nav>';
+
+            echo  $htmlPaginate;
+        }
+        ?>
+    </div>
+    <div class="TableFooter-right">
+        <select class="SnForm-control" onchange="customerList(1,this.value)">
+            <?php foreach ($variable = [10, 20, 50, 100] as $key => $value) : ?>
+                <option value="<?= $value ?>" <?= $value == $parameter['customer']['limit'] ? 'selected' : '' ?>><?= $value ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+</div>

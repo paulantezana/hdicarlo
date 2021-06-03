@@ -1,0 +1,58 @@
+@import "../../node_modules/sedna/bin/sedna";
+
+@include SnBase();
+@import "_postConfig";
+
+// Base
+@import "_base";
+
+// Components
+@include SnMenu(s,'.UserMenu');
+@include SnBtn();
+@include SnAlert();
+@include SnCard();
+@include SnForm();
+@include SnControl();
+@include SnAvatar();
+@include SnGrid();
+@include SnLoading();
+@include SnMargin();
+@include SnModal();
+@include SnMessage();
+@include SnPagination();
+@include SnTable();
+@include SnSwitch();
+// @include SnTooltip();
+@include SnTab();
+@include SnTag();
+@include SnContainer();
+@include SnCollapse();
+@include SnDivider();
+@include SnFreeze();
+@include SnEmpty();
+@include SnPadding();
+
+@include SnList();
+@include SnHidden();
+
+@import 'layout/Layout.scss';
+@import 'layout/AsideMenu.scss';
+@import 'layout/Header.scss';
+@import 'layout/HeaderMenu.scss';
+@import 'layout/SnToolbar.scss';
+@import 'global/UserMenu.scss';
+
+@import 'global/SnList.scss';
+@import 'global/Result';
+@import 'global/SnDropdown.scss';
+@import 'global/SnControlGroup.scss';
+@import 'global/SnBadge.scss';
+
+@import 'admin/DashCard';
+@import 'admin/InfiniteScroll.scss';
+@import 'admin/MonitoringTable.scss';
+@import 'admin/TableFooter.scss';
+
+@include SnControlGroup('.ss-main .ss-single-selected');
+
+@import "customSedna";

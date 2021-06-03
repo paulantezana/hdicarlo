@@ -31,13 +31,13 @@ class UserRoleController extends Controller
         }
     }
 
-    public function  list()
+    public function list()
     {
         $res = new Result();
         try {
             Authorization($this->connection, 'rol', 'listar');
 
-            $userRole = $this->userRoleModel->getAll();
+            $userRole = $this->userRoleModel->getAllWinDisabledByCompanyId($_SESSION[SESS_USER]['company_id']);
             $res->view = $this->render('admin/partials/roleList.php', [
                 'userRole' => $userRole
             ],'',true);
@@ -82,6 +82,7 @@ class UserRoleController extends Controller
                 return;
             }
 
+            $body['companyId'] = $_SESSION[SESS_USER]['company_id'];
             $res->result = $this->userRoleModel->insert($body, $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
@@ -109,6 +110,7 @@ class UserRoleController extends Controller
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
                 'description' => $body['description'],
+                'company_id' => $_SESSION[SESS_USER]['company_id'],
                 'state' => $body['state'],
             ]);
 

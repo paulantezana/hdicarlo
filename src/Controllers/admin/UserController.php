@@ -1,12 +1,13 @@
 <?php
 
-require_once MODEL_PATH . '/User.php';
-require_once MODEL_PATH . '/UserRole.php';
+require_once(MODEL_PATH . '/User.php');
+require_once(MODEL_PATH . '/UserRole.php');
+require_once(MODEL_PATH . '/IdentityDocumentType.php');
 
 class UserController extends Controller
 {
-    protected $connection;
-    protected $userModel;
+    private $connection;
+    private $userModel;
 
     public function __construct(PDO $connection)
     {
@@ -17,12 +18,16 @@ class UserController extends Controller
     public function home()
     {
         try {
-            authorization($this->connection, 'usuario', 'listar');
+            authorization($this->connection, 'user', 'listar');
             $userRoleModel = new UserRole($this->connection);
-            $userRole = $userRoleModel->getAll();
+            $identityDocumentTypeModel = new IdentityDocumentType($this->connection);
+
+            $userRoles = $userRoleModel->getAllByCompanyId($_SESSION[SESS_USER]['company_id']);
+            $identityDocumentTypes = $identityDocumentTypeModel->getAll();
 
             $this->render('admin/user.view.php', [
-                'userRole' => $userRole,
+                'userRoles' => $userRoles,
+                'identityDocumentTypes' => $identityDocumentTypes,
             ], 'layouts/admin.layout.php');
         } catch (Exception $e) {
             $this->render('500.view.php', [
@@ -35,12 +40,13 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'listar');
+            authorization($this->connection, 'user', 'listar');
             $page = htmlspecialchars(isset($_GET['page']) ? $_GET['page'] : 1);
-            $limit = htmlspecialchars(isset($_GET['limit']) ? $_GET['limit'] : 10);
+            $limit = htmlspecialchars(isset($_GET['limit']) ? $_GET['limit'] : 20);
             $search = htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '');
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
-            $user = $this->userModel->paginate($page, $limit, $search);
+            $user = $this->userModel->paginateByCompanyId((int)$companyId, $page, $limit, $search);
 
             $res->view = $this->render('admin/partials/userTable.php', [
                 'user' => $user,
@@ -52,25 +58,11 @@ class UserController extends Controller
         echo json_encode($res);
     }
 
-    public function profile()
-    {
-        try {
-            $user = $this->userModel->getById((int) $_SESSION[SESS_KEY]);
-            $this->render('profile.view.php', [
-                'user' => $user,
-            ], 'layouts/admin.layout.php');
-        } catch (Exception $e) {
-            $this->render('500.view.php', [
-                'message' => $e->getMessage(),
-            ], 'layouts/admin.layout.php');
-        }
-    }
-
     public function id()
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'modificar');
+            authorization($this->connection, 'user', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -86,7 +78,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'crear');
+            authorization($this->connection, 'user', 'crear');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -94,46 +86,20 @@ class UserController extends Controller
             if (!$validate->success) {
                 throw new Exception($validate->message);
             }
-
+            
             $res->result = $this->userModel->insert([
                 'userName' => htmlspecialchars($body['userName']),
                 'email' => htmlspecialchars($body['email']),
-                'password' => sha1(htmlspecialchars($body['password'])),
+                'password' => htmlspecialchars($body['password']),
                 'fullName' => htmlspecialchars($body['fullName']),
+                'identityDocumentId' => htmlspecialchars($body['identityDocumentId']),
+                'identityDocumentNumber' => htmlspecialchars($body['identityDocumentNumber']),
+                'lastName' => htmlspecialchars($body['lastName']),
                 'userRoleId' => htmlspecialchars($body['userRoleId']),
+                'companyId' => $_SESSION[SESS_USER]['company_id'],
             ], $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';
-        } catch (Exception $e) {
-            $res->message = $e->getMessage();
-        }
-        echo json_encode($res);
-    }
-
-    public function updateProfile()
-    {
-        $res = new Result();
-        try {
-            authorization($this->connection, 'usuario', 'modificar');
-            $postData = file_get_contents('php://input');
-            $body = json_decode($postData, true);
-
-            $validate = $this->validateInput($body, 'updateProfile');
-            if (!$validate->success) {
-                throw new Exception($validate->message);
-            }
-
-            $currentDate = date('Y-m-d H:i:s');
-            $this->userModel->updateById($body['userId'], [
-                'email' => htmlspecialchars($body['email']),
-                'user_name' => htmlspecialchars($body['userName']),
-                'full_name' => htmlspecialchars($body['fullName']),
-
-                'updated_at' => $currentDate,
-                'updated_user_id' => $_SESSION[SESS_KEY],
-            ]);
-            $res->success = true;
-            $res->message = 'El registro se actualizo exitosamente';
         } catch (Exception $e) {
             $res->message = $e->getMessage();
         }
@@ -144,7 +110,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'modificar');
+            authorization($this->connection, 'user', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -157,6 +123,9 @@ class UserController extends Controller
             $this->userModel->updateById($body['userId'], [
                 'email' => htmlspecialchars($body['email']),
                 'user_name' => htmlspecialchars($body['userName']),
+                'identity_document_id' => htmlspecialchars($body['identityDocumentId']),
+                'identity_document_number' => htmlspecialchars($body['identityDocumentNumber']),
+                'last_name' => htmlspecialchars($body['lastName']),
                 'full_name' => htmlspecialchars($body['fullName']),
                 'state' => htmlspecialchars($body['state']),
                 'user_role_id' => htmlspecialchars($body['userRoleId']),
@@ -177,7 +146,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'modificar');
+            authorization($this->connection, 'user', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -205,7 +174,7 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'eliminar');
+            authorization($this->connection, 'user', 'eliminar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 

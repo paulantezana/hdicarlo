@@ -1,0 +1,76 @@
+.SiteLayout{
+    min-height: 100vh;
+    background-attachment: fixed;
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    &-header {
+        background: var(--snColorDark);
+        // width: 100%;
+    }
+    &-main{
+        // width: 100%;
+    }
+    &-footer{
+        // text-align: center;
+        // font-size: .8rem;
+        margin-top: auto;
+        // color: var(--snColorDarkInverse);
+        // background: var(--snColorDark);
+        // padding: 1rem 1rem 0 1rem;
+        a{
+            color: var(--snColorDarkInverse);
+        }
+        .copyright{
+            // border-top: 1px solid var(--snColorDarkSmooth);
+            text-align: center;
+            display: block;
+            padding: 2rem 0;
+            font-size: .8rem;
+        }
+    }
+}
+
+.MainContainer{
+    max-width: $maxWidth;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+}
+
+.Branding{
+    &-link{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &-logo{
+        height: $siteHeaderHeight / 1.8;
+        margin-right: 8px;
+    }
+    &-name{
+        color: var(--snColor1);
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-size: 1.2rem;
+        a:hover{
+            color: var(--snColor1);
+        }
+    }
+}
+
+.SiteHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: $siteHeaderHeight;
+    line-height: $siteHeaderHeight;
+    &-right{
+        display: flex;
+        height: $siteHeaderHeight;
+        @include to(l){
+            flex-direction: row-reverse;
+        }
+    }
+}

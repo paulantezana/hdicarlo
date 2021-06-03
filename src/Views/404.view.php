@@ -5,5 +5,5 @@
     <?php else: ?>
         <p class="Result-description">Lo sentimos, la página que visitaste no existe</p>
     <?php endif; ?>
-    <a href="<?= URL_PATH ?>/" class="SnBtn primary"><i class="fas fa-house-user SnMr-2"></i>Volver al Inicio</a>
+    <a href="<?= URL_PATH ?>/" class="SnBtn primary lg radio"><i class="fas fa-home SnMr-2"></i>Volver al Inicio</a>
 </div>

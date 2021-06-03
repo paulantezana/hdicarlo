@@ -1,0 +1,28 @@
+.Login{
+  max-width: 400px;
+  margin: auto;
+  margin-top: 6rem;
+  a{
+    text-decoration: none;
+    color: var(--snColor1);
+  }
+  &-title{
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 0;
+  }
+  &-desc{
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    color: var(--snColorTextAlt);
+  }
+  .SnForm-input{
+      background: var(--snColorBgAlt);
+  }
+  &-flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

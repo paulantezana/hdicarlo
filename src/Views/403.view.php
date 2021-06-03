@@ -5,5 +5,5 @@
     <?php else: ?>
         <p class="Result-description">Lo sentimos, no estás autorizado para acceder a esta página.</p>
     <?php endif; ?>
-    <a href="<?= URL_PATH ?>/" class="SnBtn primary">Volver al Inicio</a>
+    <a href="<?= URL_PATH ?>/" class="SnBtn primary lg radio"><i class="fas fa-home SnMr-2"></i>Volver al Inicio</a>
 </div>

@@ -1,19 +1,31 @@
 <?php
 
+require_once(MODEL_PATH . '/Company.php');
+require_once(MODEL_PATH . '/AppPayment.php');
 require_once(MODEL_PATH . '/User.php');
+require_once(MODEL_PATH . '/UserRole.php');
 require_once(MODEL_PATH . '/UserForgot.php');
 require_once(MODEL_PATH . '/AppAuthorization.php');
+require_once(MODEL_PATH . '/IdentityDocumentType.php');
 require_once(CERVICE_PATH . '/SendManager/EmailManager.php');
 
 class UserController extends Controller
 {
     private $connection;
+    private $appAuthorizationModel;
+    private $companyModel;
     private $userModel;
+    private $appPaymentModel;
+    private $userForgotModel;
 
     public function __construct(PDO $connection)
     {
         $this->connection = $connection;
+        $this->appAuthorizationModel = new AppAuthorization($connection);
+        $this->companyModel = new Company($connection);
         $this->userModel = new User($connection);
+        $this->appPaymentModel = new AppPayment($connection);
+        $this->userForgotModel = new UserForgot($connection);
     }
 
     public function login()
@@ -32,15 +44,35 @@ class UserController extends Controller
                         throw new Exception('Los campos usuario y contraseña son requeridos');
                     }
 
-                    $user = $this->userModel->login($email, $password);
+                    $loginUser = $this->userModel->officeLogin($email);
+                    if (!password_verify($password, $loginUser['password'])){
+                        throw new Exception('El nombre de usuario y o contraseña es incorrecta.');
+                    }
 
-                    $responseApp = $this->initApp($user);
+                    $responseApp = $this->initApp($loginUser);
                     if (!$responseApp->success) {
                         session_destroy();
                         $this->render('403.view.php', [
                             'message' => $responseApp->message,
                         ], 'layouts/site.layout.php');
                         return;
+                    }
+
+                    if ($loginUser['company_id'] > 0) {
+                        $dateOfDue = $_SESSION[SESS_DATE_OF_DUE];
+                        $currentDate = new DateTime(date("Y-m-d"));
+                        $dateContract = new DateTime($dateOfDue);
+                        if ($currentDate > $dateContract) {
+                            session_destroy();
+                            $this->render('expiredLicense.view.php', [
+                                'dateContract' => $dateOfDue,
+                            ], 'layouts/site.layout.php');
+                            return;
+                        }
+
+                        $this->redirect('/admin');
+                    } else {
+                        $this->redirect('/');
                     }
 
                     $this->redirect('/admin');
@@ -64,15 +96,15 @@ class UserController extends Controller
     public function register()
     {
         try {
-            $this->redirect('/user/login');
-            return;
-
-            // -- NO USADO PARA ESTE SISTEMA
             $message = '';
             $messageType = '';
             $error = [];
 
+            $identityDocumentTypeModel = new IdentityDocumentType($this->connection);
+            $identityDocumentTypes = $identityDocumentTypeModel->getAll();
+
             if (isset($_POST['commit'])) {
+                $this->connection->beginTransaction();
                 try {
                     if (!isset($_POST['register'])) {
                         throw new Exception('No se proporcionó ningun dato');
@@ -85,19 +117,27 @@ class UserController extends Controller
                         throw new Exception($validate->message);
                     }
 
-                    $userName = htmlspecialchars($register['userName']);
-                    $email = htmlspecialchars($register['email']);
-                    $password = htmlspecialchars($register['password']);
+                    $identityDocumentId = htmlspecialchars($register['identityDocumentId']);
+                    $identityDocumentNumber = htmlspecialchars($register['identityDocumentNumber']);
                     $fullName = htmlspecialchars($register['fullName']);
+                    $lastName = htmlspecialchars($register['lastName']);
+                    $email = htmlspecialchars($register['email']);
+                    $userName = htmlspecialchars($register['userName']);
+                    $password = htmlspecialchars($register['password']);
 
                     $userId = $this->userModel->insert([
                         'userName' => $userName,
                         'email' => $email,
-                        'password' => $password,
+                        'password' => password_hash($password, PASSWORD_DEFAULT),
                         'fullName' => $fullName,
-                        'userRoleId' => 2,
+                        'lastName' => $lastName,
+                        'identityDocumentId' => $identityDocumentId,
+                        'identityDocumentNumber' => $identityDocumentNumber,
+                        'userRoleId' => 0,
+                        'companyId' => 0,
                     ], 0);
 
+                    // Get All Data User
                     $loginUser = $this->userModel->getById($userId);
                     $responseApp = $this->initApp($loginUser);
                     if (!$responseApp->success) {
@@ -114,25 +154,33 @@ class UserController extends Controller
                         $email,
                         '¡🚀 Bienvenido a ' . APP_NAME . ' !',
                         '<div>
-                            <h1>' . $fullName . ', bienvenido(a) a ' . APP_NAME . '. Acelera tu negocio</h1>
+                            <h1>' . $fullName . ', bienvenido(a) a ' . APP_NAME . '. venta de pasajes</h1>
                             <p>' . APP_DESCRIPTION . '</p>
                             <a href="' . $urlApp . '">Ingresar al sistema</a>
                         </div>'
                     );
 
                     if (!$resEmail->success) {
-                        throw new Exception($resEmail->message);
+                        error_log('Send email register fail ' . $resEmail->message);
                     }
 
-                    $this->redirect('/');
+                    if ($loginUser['company_id'] > 0) {
+                        $this->redirect('/user/postLogin');
+                    } else {
+                        $this->redirect('/');
+                    }
+
+                    $this->connection->commit();
                     return;
                 } catch (Exception $e) {
+                    $this->connection->rollBack();
                     $message = $e->getMessage();
                     $messageType = 'error';
                 }
             }
 
             $this->render('register.view.php', [
+                'identityDocumentTypes' => $identityDocumentTypes,
                 'message' => $message,
                 'error' => $error,
                 'messageType' => $messageType,
@@ -258,7 +306,7 @@ class UserController extends Controller
                     }
 
                     $password = sha1($password);
-                    $this->userModel->UpdateById($user['user_id'], [
+                    $this->userModel->updateById($user['user_id'], [
                         "updated_at" => $currentDate,
                         "updated_user_id" => $user['user_id'],
 
@@ -303,15 +351,31 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            $appAuthorizationModel = new AppAuthorization($this->connection);
-            $menu = $appAuthorizationModel->getMenu($user['user_role_id']);
-
-            // 1 day
-            setcookie('admin_menu', json_encode($menu), time() + (86400000), '/');
-            
             unset($user['password']);
+            unset($user['updated_at']);
+            unset($user['created_at']);
+            unset($user['created_user_id']);
+            unset($user['updated_user_id']);
+
             $_SESSION[SESS_KEY] = $user['user_id'];
             $_SESSION[SESS_USER] = $user;
+
+            if (!($user['company_id'] > 0)) {
+                $res->success = true;
+                return $res;
+            }
+
+            $menu = $this->appAuthorizationModel->getMenu($user['user_role_id']);
+            $appPayment = $this->appPaymentModel->getLastPaymentByCompanyId($user['company_id']);
+            
+            setcookie('admin_menu', json_encode($menu), time() + (86400000), '/');
+            if($appPayment == false){
+                $_SESSION[SESS_DATE_OF_DUE] = date('Y-m-d H:i:s', strtotime('-1 day'));
+                $_SESSION[SESS_DATE_OF_DUE_DAY] = 0;
+            } else {
+                $_SESSION[SESS_DATE_OF_DUE] = $appPayment['to_date_time'];
+                $_SESSION[SESS_DATE_OF_DUE_DAY] = 15;
+            }
 
             $res->success = true;
         } catch (Exception $e) {
@@ -320,29 +384,10 @@ class UserController extends Controller
         return $res;
     }
 
-    public function update()
-    {
-        try {
-            if (!isset($_SESSION[SESS_KEY])) {
-                $this->redirect('/usuario/login');
-            }
-
-            $user = $this->userModel->getById($_SESSION[SESS_KEY]);
-            $this->render('profileUpdate.view.php', [
-                'user' => $user,
-            ], 'layouts/site.layout.php');
-        } catch (Exception $e) {
-            $this->render('500.view.php', [
-                'message' => $e->getMessage(),
-            ], 'layouts/site.layout.php');
-        }
-    }
-
     public function updateProfile()
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -355,12 +400,10 @@ class UserController extends Controller
             $this->userModel->updateById($body['userId'], [
                 'email' => htmlspecialchars($body['email']),
                 'user_name' => htmlspecialchars($body['userName']),
+                'identity_document_id' => htmlspecialchars($body['identityDocumentId']),
+                'identity_document_number' => htmlspecialchars($body['identityDocumentNumber']),
+                'last_name' => htmlspecialchars($body['lastName']),
                 'full_name' => htmlspecialchars($body['fullName']),
-                "phone" => htmlspecialchars($body['phone']),
-                "web_site" => htmlspecialchars($body['webSite']),
-                "facebook" => htmlspecialchars($body['facebook']),
-                "twitter" => htmlspecialchars($body['twitter']),
-                "gender" => htmlspecialchars($body['gender']),
 
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
@@ -377,7 +420,6 @@ class UserController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -391,7 +433,7 @@ class UserController extends Controller
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
-                'password' => sha1(htmlspecialchars($body['password'] ?? '')),
+                'password' => sha1(htmlspecialchars($body['password'])),
             ]);
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
@@ -410,7 +452,7 @@ class UserController extends Controller
             }
 
             $currentDate = date('Y-m-d H:i:s');
-            $avatarUrl = uploadAndValidateFile($_FILES['avatar'], '/user/', 'user' . $_POST['userId'], 2097152, ['jpeg', 'jpg', 'png']);
+            $avatarUrl = uploadAndValidateFile($_FILES['avatar'], '/upload/user/', 'user-' . $_POST['userId'], 102400, ['jpeg', 'jpg', 'png']);
             $this->userModel->UpdateById($_POST['userId'], [
                 "updated_at" => $currentDate,
                 "updated_user_id" => $_SESSION[SESS_KEY],
@@ -423,6 +465,71 @@ class UserController extends Controller
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
+    }
+
+    public function innerLogin()
+    {
+        try {
+            if (isset($_POST['commit'])) {
+                try {
+                    if (!isset($_POST['email']) || !isset($_POST['password'])) {
+                        throw new Exception('Los campos usuario y contraseña son requeridos');
+                    }
+
+                    $email = htmlspecialchars($_POST['email']);
+                    $password = htmlspecialchars($_POST['password']);
+
+                    if (empty($email) || empty($password)) {
+                        throw new Exception('Los campos usuario y contraseña son requeridos');
+                    }
+
+                    $loginUser = $this->userModel->innerLogin($email, $password);
+                    if (!password_verify($password, $loginUser['password'])){
+                        throw new Exception('El nombre de usuario y o contraseña es incorrecta.');
+                    }
+                    unset($loginUser['password']);
+                    
+                    $_SESSION[SESS_KEY] = $loginUser['user_id'];
+                    $_SESSION[SESS_USER] = $loginUser;
+
+                    $this->redirect('/inner');
+                    return;
+                } catch (Exception $e) {
+                    $this->render('innerLogin.view.php', [
+                        'messageType' => 'error',
+                        'message' => $e->getMessage(),
+                    ], 'layouts/site.layout.php');
+                }
+            } else {
+                $this->render('innerLogin.view.php', [], 'layouts/site.layout.php');
+            }
+        } catch (Exception $e) {
+            $this->render('500.view.php', [
+                'message' => $e->getMessage(),
+            ], 'layouts/site.layout.php');
+        }
+    }
+
+    public function update()
+    {
+        try {
+            if (!isset($_SESSION[SESS_KEY])) {
+                $this->redirect('/usuario/login');
+            }
+
+            $identityDocumentTypeModel = new IdentityDocumentType($this->connection);
+            $identityDocumentTypes = $identityDocumentTypeModel->getAll();
+
+            $user = $this->userModel->getById($_SESSION[SESS_KEY]);
+            $this->render('profileUpdate.view.php', [
+                'user' => $user,
+                'identityDocumentTypes' => $identityDocumentTypes,
+            ], 'layouts/site.layout.php');
+        } catch (Exception $e) {
+            $this->render('500.view.php', [
+                'message' => $e->getMessage(),
+            ], 'layouts/site.layout.php');
+        }
     }
 
     private function validateRegister($body)

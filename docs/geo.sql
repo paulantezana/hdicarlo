@@ -35,7 +35,7 @@ INSERT INTO geo_level_1 (geo_level_1_id, `name`, country_id) VALUES
 -- // 
 -- // 
 INSERT INTO geo_level_2 (geo_level_2_id, geo_level_1_id, `name`) VALUES
-(1, 1, 'CHACHAPOYAS '),
+(1, 1, 'CHACHAPOYAS'),
 (2, 1, 'BAGUA'),
 (3, 1, 'BONGARA'),
 (4, 1, 'CONDORCANQUI'),
@@ -91,7 +91,7 @@ INSERT INTO geo_level_2 (geo_level_2_id, geo_level_1_id, `name`) VALUES
 (54, 6, 'CAJAMARCA'),
 (55, 6, 'CAJABAMBA'),
 (56, 6, 'CELENDIN'),
-(57, 6, 'CHOTA '),
+(57, 6, 'CHOTA'),
 (58, 6, 'CONTUMAZA'),
 (59, 6, 'CUTERVO'),
 (60, 6, 'HUALGAYOC'),
@@ -2065,3 +2065,13 @@ INSERT INTO geo_level_3 (geo_level_3_id, geo_level_2_id, `name`) VALUES
 (1829, 192, 'IRAZOLA'),
 (1830, 192, 'CURIMANA'),
 (1831, 193, 'PURUS');
+
+INSERT INTO geo_locations (country_id, geo_level_1_id, geo_level_2_id, geo_level_3_id)
+SELECT g1.country_id, g2.geo_level_1_id, g3.geo_level_2_id, g3.geo_level_3_id FROM geo_level_3 as g3
+INNER JOIN geo_level_2 as g2 ON g3.geo_level_2_id = g2.geo_level_2_id
+INNER JOIN geo_level_1 as g1 ON g2.geo_level_1_id = g1.geo_level_1_id;
+
+INSERT INTO geo_label_locations (denomination,level_number,country_id)
+    VALUES ('Departamento',1,1),
+            ('Provincia',2,1),
+            ('Distrito',3,1);

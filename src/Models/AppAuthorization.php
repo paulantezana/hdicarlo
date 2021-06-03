@@ -48,8 +48,6 @@ class AppAuthorization extends Model
     public function save(array $authIds, int $userRoleId, int $userId)
     {
         try {
-            $this->db->beginTransaction();
-
             $stmt = $this->db->prepare('DELETE FROM user_role_authorizations WHERE user_role_id = :user_role_id');
             $stmt->bindParam(':user_role_id', $userRoleId);
 
@@ -67,10 +65,7 @@ class AppAuthorization extends Model
                     throw new Exception($stmt->errorInfo()[2]);
                 }
             }
-
-            $this->db->commit();
         } catch (Exception $e) {
-            $this->db->rollBack();
             throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
         }
     }

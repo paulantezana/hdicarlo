@@ -35,10 +35,7 @@
                                         <td><?= $row['action'] ?></td>
                                         <td><?= $row['description'] ?></td>
                                         <td>
-                                            <div class="SnSwitch" style="height: 18px">
-                                                <input class="SnSwitch-control" type="checkbox" id="autState<?= $row['app_authorization_id']?>">
-                                                <label class="SnSwitch-label" for="autState<?= $row['app_authorization_id']?>"></label>
-                                            </div>  
+                                            <input type="checkbox" id="autState<?= $row['app_authorization_id']?>">
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -52,7 +49,7 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/script/appAuthorization.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/appAuthorization.js"></script>
 
 <div class="SnModal-wrapper" data-modal="userRoleModalForm">
     <div class="SnModal">
@@ -71,10 +68,8 @@
                     </div>
                 </div>
                 <div class="SnForm-item">
-                    <div class="SnSwitch">
-                        <input class="SnSwitch-control" type="checkbox" id="userRoleState">
-                        <label class="SnSwitch-label" for="userRoleState">Estado</label>
-                    </div>
+                    <input type="checkbox" id="userRoleState" class="SnSwitch">
+                    <label for="userRoleState">Estado</label>
                 </div>
                 <button type="submit" class="SnBtn primary lg block" id="userRoleFormSubmit"><i class="fas fa-save SnMr-2"></i>Guardar</button>
             </form>

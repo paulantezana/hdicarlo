@@ -8,11 +8,11 @@
             <form action="" class="SnForm" novalidate id="customerForm" onsubmit="customerSubmit(event)">
                 <input type="hidden" class="SnForm-control" id="customerId">
                 <div class="SnForm-item required">
-                    <label for="customerIdentityDocumentCode" class="SnForm-label">Tipo de documetno</label>
-                    <select id="customerIdentityDocumentCode" class="SnForm-control" required>
+                    <label for="customerIdentityDocumentId" class="SnForm-label">Tipo de documetno</label>
+                    <select id="customerIdentityDocumentId" class="SnForm-control" required>
                         <option value="">Seleccionar</option>
                         <?php foreach ($parameter['identityDocumentType'] ?? [] as $row) : ?>
-                            <option value="<?= $row['code'] ?>"><?= $row['description'] ?></option>
+                            <option value="<?= $row['identity_document_id'] ?>"><?= $row['description'] ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -82,20 +82,20 @@
     }
 
     function CustomerSearchDocument() {
-        let searchIdentityDocumentCode = document.getElementById('customerIdentityDocumentCode').value;
+        let searchIdentityDocumentCode = document.getElementById('customerIdentityDocumentId').value;
         let searchDocumentNumber = document.getElementById('customerDocumentNumber').value
 
         SearchDocumentChangeState(true);
-        RequestApi.fetch('/admin/customer/queryDocument', {
+        RequestApi.fetch('/page/queryDocument', {
             method: 'POST',
             body: {
                 documentNumber: searchDocumentNumber,
-                documentType: searchIdentityDocumentCode,
+                documentTypeId: searchIdentityDocumentCode,
             }
         })
             .then(res => {
                 if (res.success) {
-                    document.getElementById('customerSocialReason').value = res.result.social_reason;
+                    document.getElementById('customerSocialReason').value = res.result.full_name;
                     document.getElementById('customerFiscalAddress').value = res.result.full_address;
                 } else {
                     SnModal.error({
