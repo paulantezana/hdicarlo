@@ -161,14 +161,22 @@ function exhibitorList(page = 1, limit = 10, search = "") {
 function exhibitorClearForm() {
   let currentForm = document.getElementById("exhibitorForm");
   let exhibitorCode = document.getElementById("exhibitorCode");
-  if (currentForm && exhibitorCode) {
-    geoGetCurrentPosition().then(userLocation => {
-      drawGoogleMap(userLocation);
-    }).catch(err => toastr.error(err, 'Algo salió mal!!'));
+  if (currentForm) {
     currentForm.reset();
-    exhibitorCode.focus();
   }
+  if (exhibitorCode) {
+    setTimeout(() => {
+      exhibitorCode.focus();
+    }, 500);
+  }
+
+  exhibitorState.slimCustomerId.set(0);
+  exhibitorState.slimGeoLocation.set(0);
   pValidator.reset();
+
+  geoGetCurrentPosition().then(userLocation => {
+    drawGoogleMap(userLocation);
+  }).catch(err => toastr.error(err, 'Algo salió mal!!'));
 }
 
 function exhibitorSubmit(e) {
