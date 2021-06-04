@@ -48,9 +48,11 @@ class Customer extends Model
             $totalRows = $this->db->query("SELECT COUNT(*) FROM customers WHERE company_id = '{$companyId}' AND social_reason LIKE '%{$search}%' AND state = 1")->fetchColumn();
             $totalPages = ceil($totalRows / $limit);
 
-            $stmt = $this->db->prepare("SELECT cus.*, tdt.description as identity_document_description FROM customers as cus
+            $stmt = $this->db->prepare("SELECT cus.*, tdt.description as identity_document_description
+                                        FROM customers as cus
                                         INNER JOIN identity_document_types tdt on cus.identity_document_id = tdt.identity_document_id
-                                        WHERE company_id = :company_id AND cus.social_reason LIKE :search AND cus.state = 1 LIMIT $offset, $limit");
+                                        WHERE company_id = :company_id AND cus.social_reason LIKE :search AND cus.state = 1
+                                        ORDER BY cus.customer_id DESC LIMIT $offset, $limit");
             $stmt->bindValue(':company_id', $companyId);
             $stmt->bindValue(':search', '%' . $search . '%');
 

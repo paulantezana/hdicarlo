@@ -369,7 +369,7 @@ function customerSubmit(e) {
   customerSetLoading(true);
 
   let customerSendData = {};
-  customerSendData.identityDocumentCode = document.getElementById("customerIdentityDocumentCode").value;
+  customerSendData.identityDocumentId = document.getElementById("customerIdentityDocumentId").value;
   customerSendData.documentNumber = document.getElementById("customerDocumentNumber").value;
   customerSendData.socialReason = document.getElementById("customerSocialReason").value;
   customerSendData.commercialReason = document.getElementById("customerCommercialReason").value;

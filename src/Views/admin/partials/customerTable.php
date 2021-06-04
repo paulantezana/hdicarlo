@@ -64,7 +64,7 @@
             $htmlPaginate       = '<nav aria-label="..."><ul class="SnPagination">';
 
             $class      = ($currentPage == 1) ? "disabled" : "";
-            $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . ($currentPage - 1) . '\',\'' . $limitPage . '\')" class="SnPagination-link">Anterior</a></li>';
+            $htmlPaginate       .= '<li class="SnPagination-item ' . $class . '"><a href="#" onclick="customerList(\'' . ($currentPage - 1) . '\',\'' . $limitPage . '\')" class="SnPagination-link"><i class="fas fa-chevron-left"></i></a></li>';
 
             if ($startPage > 1) {
                 $htmlPaginate   .= '<li class="SnPagination-item"><a href="#" onclick="customerList(\'1\',\'' . $limitPage . '\')" class="SnPagination-link">1</a></li>';

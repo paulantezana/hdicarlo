@@ -160,7 +160,7 @@ class UserController extends Controller
                 'updated_at' => $currentDate,
                 'updated_user_id' => $_SESSION[SESS_KEY],
 
-                'password' => sha1(htmlspecialchars($body['password'])),
+                'password' => password_hash(htmlspecialchars($body['password']), PASSWORD_DEFAULT),
             ]);
             $res->success = true;
             $res->message = 'El registro se actualizo exitosamente';
