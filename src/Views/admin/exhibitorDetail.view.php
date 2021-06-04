@@ -87,4 +87,4 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/script/exhibitorDetail.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/exhibitorDetail.js"></script>

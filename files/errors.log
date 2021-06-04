@@ -264,3 +264,21 @@ D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(227)
 D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(227)
 2021-06-03 22:27:18: 8 Undefined offset: 1
 D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(227)
+2021-06-04 07:11:59: 8 Undefined index: total
+D:\local\hdicarlo\src\Views\admin\partials\exhibitorTable.php(54)
+2021-06-04 07:48:24: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-04 07:48:31: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-04 07:57:23: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-04 08:05:22: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-04 08:05:29: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-04 08:06:15: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-04 08:06:40: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-04 08:08:41: 8 Undefined index: HTTP_ACCEPT
+D:\local\hdicarlo\src\Controllers\PageController.php(41)

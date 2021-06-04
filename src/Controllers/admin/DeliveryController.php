@@ -45,18 +45,19 @@ class DeliveryController extends Controller
             // authorization($this->connection, 'cliente', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
             $validate = $this->validate($body);
             if (!$validate->success) {
                 throw new Exception($validate->message);
             }
-
+            
             $currentDate = date('Y-m-d H:i:s');
             $this->deliveryModel->insert([
                 'latLong' => $body['latitude'] . ',' . $body['longitude'],
                 'dateOfDelivery' => $currentDate,
                 'observation' => htmlspecialchars(trim($body['observation'])),
-    
+                'companyId' => $companyId,
                 'exhibitorId' => $body['exhibitorId'],
                 'userId' => $_SESSION[SESS_KEY],
             ], $_SESSION[SESS_KEY]);

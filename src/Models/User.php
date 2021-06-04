@@ -38,7 +38,7 @@ class User extends Model
     public function countByCompanyId($companyId)
     {
         try {
-            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM users WHERE user_id > 1 AND state = 1 AND company_id = :company_id");
+            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM users WHERE state = 1 AND company_id = :company_id");
             $stmt->bindParam(":company_id", $companyId);
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
@@ -58,14 +58,14 @@ class User extends Model
     {
         try {
             $offset = ($page - 1) * $limit;
-            $totalRows = $this->db->query("SELECT COUNT(*) FROM users WHERE user_id > 1 AND user_name LIKE '%{$search}%' AND company_id = '{$companyId}'")->fetchColumn();
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM users WHERE user_name LIKE '%{$search}%' AND company_id = '{$companyId}'")->fetchColumn();
             $totalPages = ceil($totalRows / $limit);
 
             $stmt = $this->db->prepare("SELECT users.*, ur.description as user_roles,
                                         ur.state as user_role_state
                                         FROM users
                                         INNER JOIN user_roles ur on users.user_role_id = ur.user_role_id
-                                        WHERE users.user_id > 1 AND users.user_name LIKE :search AND users.company_id = :company_id LIMIT $offset, $limit");
+                                        WHERE users.user_name LIKE :search AND users.company_id = :company_id LIMIT $offset, $limit");
             $stmt->bindValue(':search', '%' . $search . '%');
             $stmt->bindParam(":company_id", $companyId);
 

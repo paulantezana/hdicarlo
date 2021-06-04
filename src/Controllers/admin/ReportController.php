@@ -20,7 +20,6 @@ class ReportController extends Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -36,7 +35,6 @@ class ReportController extends Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'usuario', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 

@@ -21,39 +21,37 @@
     <div class="SnCard SnMb-4">
         <div class="SnCard-body">
             <div class="SnMb-2">
-                <div class="SnSwitch">
-                    <input class="SnSwitch-control " id="filterOptions" type="checkbox" data-collapsetrigger="filterOptions">
-                    <label class="SnSwitch-label" for="filterOptions">Filtro</label>
-                </div>
+                <input class="SnSwitch " id="filterOptions" type="checkbox" data-collapsetrigger="filterOptions">
+                <label for="filterOptions">Filtro</label>
             </div>
             <div class="SnCollapse" data-collapse="filterOptions">
                 <div class="SnGrid m-grid-3 l-grid-4 col-gap row-gap lg-grid-5 xl-grid-6">
-                    <div class="SnForm-item">
+                    <div class="SnForm-item inner" style="margin-bottom: 0;">
                         <label for="searchContent" class="SnForm-label">Buscar</label>
                         <div class="SnControl-wrapper">
                             <i class="fas fa-street-view SnControl-prefix"></i>
                             <input type="text" class="SnForm-control SnControl" id="searchContent" placeholder="Buscar...">
                         </div>
                     </div>
-                    <div class="SnForm-item">
+                    <div class="SnForm-item inner" style="margin-bottom: 0;">
                         <label for="filterLocal1" class="SnForm-label">Departamento</label>
                         <select id="filterLocal1" class="SnForm-control">
                             <option value="">Seleccionar</option>
                         </select>
                     </div>
-                    <div class="SnForm-item required">
+                    <div class="SnForm-item inner required" style="margin-bottom: 0;">
                         <label for="filterLocal2" class="SnForm-label">Provincia</label>
                         <select id="filterLocal2" class="SnForm-control">
                             <option value="">Seleccionar</option>
                         </select>
                     </div>
-                    <div class="SnForm-item required">
+                    <div class="SnForm-item inner required" style="margin-bottom: 0;">
                         <label for="filterLocal3" class="SnForm-label">Distrito</label>
                         <select id="filterLocal3" class="SnForm-control">
                             <option value="">Seleccionar</option>
                         </select>
                     </div>
-                    <div class="SnForm-item required">
+                    <div class="SnForm-item inner required" style="margin-bottom: 0;">
                         <label for="filterCustomerId" class="SnForm-label">Cliente</label>
                         <select id="filterCustomerId">
                             <option value="">Seleccionar</option>

@@ -1,0 +1,15 @@
+
+.Exhibitor{
+    @include from(l){
+        display: flex;
+    }
+    &-table{
+        flex: 1 1 auto;
+    }
+    &-map{
+        @include from(l){
+            flex: 1 1 200px;
+            margin-left: 1rem;
+        }
+    }
+}

@@ -7,10 +7,11 @@ class Exhibitor extends Model
         parent::__construct('exhibitors', 'exhibitor_id', $connection);
     }
 
-    public function count()
+    public function countByCompanyId(int $companyId)
     {
         try {
-            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM exhibitors WHERE state = 1");
+            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM exhibitors WHERE company_id = :company_id AND state = 1");
+            $stmt->bindParam(":company_id", $companyId);
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
             }
@@ -45,21 +46,18 @@ class Exhibitor extends Model
         }
     }
 
-    public function getByCode(string $code)
+    public function getByCodeAndCompanyId(int $companyId, string $code)
     {
         try {
             $stmt = $this->db->prepare("SELECT exh.*,
-                                                CONCAT(exh.country_id, '_', exh.geo_level_1_id, '_', exh.geo_level_2_id, '_', exh.geo_level_3_id) as geo_id,
-                                                CONCAT(level1.name, '-', level2.name, '-', level3.name) as geo_name,
+                                                geo.geo_name,
                                                 cus.social_reason as customer_social_reason
                                             FROM exhibitors as exh
                                             INNER JOIN customers AS cus ON exh.customer_id = cus.customer_id
-                                            LEFT JOIN countries AS coun ON exh.country_id = coun.country_id
-                                            LEFT JOIN geo_level_1 AS level1 ON exh.geo_level_1_id = level1.geo_level_1_id
-                                            LEFT JOIN geo_level_2 AS level2 ON exh.geo_level_2_id = level2.geo_level_2_id
-                                            LEFT JOIN geo_level_3 AS level3 ON exh.geo_level_3_id = level3.geo_level_3_id
-                                            WHERE exh.code = :code LIMIT 1");
+                                            INNER JOIN geo_location_view as geo ON exh.geo_location_id = geo.geo_location_id
+                                            WHERE exh.company_id = :company_id AND  exh.code = :code LIMIT 1");
             $stmt->bindParam(":code", $code);
+            $stmt->bindParam(":company_id", $companyId);
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
             }
@@ -69,7 +67,7 @@ class Exhibitor extends Model
         }
     }
 
-    public function monitoring(string $currentDate,int $days)
+    public function monitoringByCompanyId(int $companyId, string $currentDate,int $days)
     {
         try {
             $endDate = strtotime ('+'.$days.' day' , strtotime ($currentDate));
@@ -77,9 +75,10 @@ class Exhibitor extends Model
  
             $stmt = $this->db->prepare("SELECT del.*, us.full_name as user_full_name, us.user_name FROM deliveries AS del 
                                         INNER JOIN users AS us ON del.user_id = us.user_id
-                                        WHERE del.date_of_delivery BETWEEN :startDate AND :endDate");
-            $stmt->bindParam(':startDate', $currentDate);
-            $stmt->bindParam(':endDate', $endDate);
+                                        WHERE del.company_id = :company_id AND del.date_of_delivery BETWEEN :start_date AND :end_date");
+            $stmt->bindParam(':start_date', $currentDate);
+            $stmt->bindParam(':end_date', $endDate);
+            $stmt->bindParam(':company_id', $companyId);
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
             }
@@ -89,11 +88,11 @@ class Exhibitor extends Model
         }
     }
 
-    public function paginate(int $page, int $limit = 10, string $search = '')
+    public function paginateByCompanyId(int $companyId, int $page, int $limit = 10, string $search = '')
     {
         try {
             $offset = ($page - 1) * $limit;
-            $totalRows = $this->db->query("SELECT COUNT(*) FROM exhibitors WHERE code LIKE '%{$search}%' AND state = 1")->fetchColumn();
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM exhibitors WHERE company_id = '{$companyId}' AND code LIKE '%{$search}%' AND state = 1")->fetchColumn();
             $totalPages = ceil($totalRows / $limit);
 
             $stmt = $this->db->prepare("SELECT exh.*,
@@ -105,8 +104,10 @@ class Exhibitor extends Model
                                         INNER JOIN customers AS cus ON exh.customer_id = cus.customer_id
                                         INNER JOIN sizes AS siz ON exh.size_id = siz.size_id
                                         INNER JOIN geo_location_view as geo ON exh.geo_location_id = geo.geo_location_id
-                                        WHERE exh.code LIKE :search AND exh.state = 1 LIMIT $offset, $limit");
+                                        WHERE exh.code LIKE :search AND exh.state = 1 AND exh.company_id = :company_id
+                                        LIMIT $offset, $limit");
             $stmt->bindValue(':search', '%' . $search . '%');
+            $stmt->bindValue(':company_id', $companyId);
 
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
@@ -118,6 +119,7 @@ class Exhibitor extends Model
                 'pages' => $totalPages,
                 'limit' => $limit,
                 'data' => $data,
+                'total' => $totalRows,
             ];
             return $paginate;
         } catch (Exception $e) {
@@ -129,14 +131,15 @@ class Exhibitor extends Model
     {
         try {
             $currentDate = date('Y-m-d H:i:s');
-            $stmt = $this->db->prepare('INSERT INTO exhibitors (code, address, size_id, geo_location_id, lat_long, customer_id, created_at, created_user_id)
-                                                    VALUES (:code, :address, :size_id, :geo_location_id, :lat_long, :customer_id, :created_at, :created_user_id)');
+            $stmt = $this->db->prepare('INSERT INTO exhibitors (code, address, size_id, geo_location_id, lat_long, customer_id, company_id, created_at, created_user_id)
+                                                    VALUES (:code, :address, :size_id, :geo_location_id, :lat_long, :customer_id, :company_id, :created_at, :created_user_id)');
             $stmt->bindParam(':code', $exhibitor['code']);
             $stmt->bindParam(':address', $exhibitor['address']);
             $stmt->bindParam(':size_id', $exhibitor['sizeId']);
             $stmt->bindParam(':geo_location_id', $exhibitor['geoLocationId']);
             $stmt->bindParam(':lat_long', $exhibitor['latLong']);
             $stmt->bindParam(':customer_id', $exhibitor['customerId']);
+            $stmt->bindParam(':company_id', $exhibitor['companyId']);
 
             $stmt->bindParam(':created_at', $currentDate);
             $stmt->bindParam(':created_user_id', $userId);

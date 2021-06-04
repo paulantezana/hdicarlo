@@ -54,7 +54,6 @@ function searchExhibitorByCode() {
 function clearDelivery() {
   document.getElementById('exhibitorDetail').innerHTML = '';
   document.getElementById('searchExhibitorCode').value = '';
-  document.getElementById('orderDateOfDelivery').value = '';
   document.getElementById('deliveryObservation').value = '';
 }
 

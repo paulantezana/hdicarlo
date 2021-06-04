@@ -92,7 +92,6 @@
                                         </a>
                                     </li>
                                     <li class="divider"></li>
-                                    <li class="SnMt-2"><a href="<?= URL_PATH ?>/user/travel"><i class="fas fa-bus SnMr-2"></i>Mis viajes</a></li>
                                     <li><a href="<?= URL_PATH ?>/user/update"><i class="fas fa-user SnMr-2"></i>Perfil</a></li>
                                     <?php if (($_SESSION[SESS_USER]['company_id'] ?? 0) > 0) : ?>
                                         <li><a href="<?= URL_PATH ?>/admin"><i class="fas fa-user-cog SnMr-2"></i>Corporativo</a></li>

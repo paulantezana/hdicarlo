@@ -11,8 +11,8 @@ class Delivery extends Model
     {
         try {
             $currentDate = date('Y-m-d H:i:s');
-            $stmt = $this->db->prepare('INSERT INTO deliveries (date_of_issue, lat_long, picture_path, date_of_delivery, observation, exhibitor_id, user_id, created_at, created_user_id)
-                                                    VALUES (:date_of_issue, :lat_long, :picture_path, :date_of_delivery, :observation, :exhibitor_id, :user_id, :created_at, :created_user_id)');
+            $stmt = $this->db->prepare('INSERT INTO deliveries (date_of_issue, lat_long, picture_path, date_of_delivery, observation, company_id, exhibitor_id, user_id, created_at, created_user_id)
+                                                    VALUES (:date_of_issue, :lat_long, :picture_path, :date_of_delivery, :observation, :company_id, :exhibitor_id, :user_id, :created_at, :created_user_id)');
 
             $stmt->bindParam(':date_of_issue', $currentDate);
             $stmt->bindParam(':lat_long', $delivery['latLong']);
@@ -20,6 +20,7 @@ class Delivery extends Model
             $stmt->bindParam(':date_of_delivery', $delivery['dateOfDelivery']);
             $stmt->bindParam(':observation', $delivery['observation']);
 
+            $stmt->bindParam(':company_id', $delivery['companyId']);
             $stmt->bindParam(':exhibitor_id', $delivery['exhibitorId']);
             $stmt->bindParam(':user_id', $delivery['userId']);
 

@@ -94,6 +94,7 @@ class ExhibitorController extends Controller
         try {
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
             if(!isset($body['dateStart'])){
                 throw new Exception('No se especifico la fecha');
@@ -103,7 +104,7 @@ class ExhibitorController extends Controller
             }
 
             $exhibitor =  $this->exhibitorModel->getAll();
-            $exhibitorMonitoring =  $this->exhibitorModel->monitoring($body['dateStart'], $body['quantity']);
+            $exhibitorMonitoring =  $this->exhibitorModel->monitoringByCompanyId($companyId, $body['dateStart'], $body['quantity']);
 
             $res->result = [
                 'exhibitor' => $exhibitor,
@@ -141,8 +142,10 @@ class ExhibitorController extends Controller
             $page = htmlspecialchars(isset($_GET['page']) ? $_GET['page'] : 1);
             $limit = htmlspecialchars(isset($_GET['limit']) ? $_GET['limit'] : 10);
             $search = htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '');
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
-            $exhibitor = $this->exhibitorModel->paginate($page, $limit, $search);
+            // public function paginateByCompanyId(int $companyId, int $page, int $limit = 10, string $search = '')
+            $exhibitor = $this->exhibitorModel->paginateByCompanyId($companyId, $page, $limit, $search);
 
             $res->view = $this->render('admin/partials/exhibitorTable.php', [
                 'exhibitor' => $exhibitor,
@@ -177,6 +180,7 @@ class ExhibitorController extends Controller
             // authorization($this->connection, 'cliente', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
             if (!isset($body['code'])) {
                 throw new Exception('No se envió el código');
@@ -187,7 +191,7 @@ class ExhibitorController extends Controller
                 throw new Exception('Ingrese almenos un codigo');
             }
 
-            $exhibitor = $this->exhibitorModel->getByCode($code);
+            $exhibitor = $this->exhibitorModel->getByCodeAndCompanyId($companyId, $code);
             if ($exhibitor == false) {
                 throw new Exception('No se encontro ningun resultado');
             }
@@ -211,6 +215,7 @@ class ExhibitorController extends Controller
             // authorization($this->connection, 'cliente', 'crear');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
             $validate = $this->validateInput($body);
             if (!$validate->success) {
@@ -226,6 +231,7 @@ class ExhibitorController extends Controller
                 'latLong' => $latLong,
                 'address' => htmlspecialchars($body['address']),
                 'customerId' => htmlspecialchars($body['customerId']),
+                'companyId' => $companyId,
             ], $_SESSION[SESS_KEY]);
             $res->success = true;
             $res->message = 'El registro se inserto exitosamente';

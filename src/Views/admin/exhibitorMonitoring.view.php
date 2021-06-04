@@ -61,5 +61,5 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/script/helpers/moment.js"></script>
-<script src="<?= URL_PATH ?>/assets/script/exhibitorMonitoring.js"></script>
+<script src="<?= URL_PATH ?>/assets/libraries/js/moment-with-locales.min.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/exhibitorMonitoring.js"></script>

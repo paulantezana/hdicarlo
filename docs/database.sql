@@ -279,7 +279,7 @@ CREATE TABLE exhibitor_states(
 
 CREATE TABLE exhibitors(
     exhibitor_id INT AUTO_INCREMENT NOT NULL,
-    code VARCHAR(64) NOT NULL UNIQUE,
+    code VARCHAR(64) NOT NULL,
     address VARCHAR(255) NOT NULL,
     operative VARCHAR(64) DEFAULT '',
 
@@ -295,7 +295,8 @@ CREATE TABLE exhibitors(
     created_user_id INT,
     updated_user_id INT,
     state TINYINT DEFAULT 1,
-    CONSTRAINT pk_exhibitors PRIMARY KEY (exhibitor_id)
+    CONSTRAINT pk_exhibitors PRIMARY KEY (exhibitor_id),
+    CONSTRAINT uk_exhibitors UNIQUE (code, company_id)
 ) ENGINE=InnoDB;
 
 
@@ -339,6 +340,7 @@ CREATE TABLE orders(
     date_of_delivery DATE,
     observation VARCHAR(64) DEFAULT '',
 
+    company_id INT NOT NULL,
     exhibitor_id INT NOT NULL,
     user_id INT NOT NULL,
 
@@ -358,6 +360,7 @@ CREATE TABLE deliveries(
     date_of_delivery DATE,
     observation VARCHAR(64) DEFAULT '',
 
+    company_id INT NOT NULL,
     exhibitor_id INT NOT NULL,
     user_id INT NOT NULL,
 

@@ -22,9 +22,12 @@ class HomeController extends Controller
     public function home()
     {
         try {
-            $userCount = 0; //$this->userModel->count();
-            $exhibitorCount = $this->exhibitorModel->count();
-            $customerCount = $this->customerModel->count();
+            
+            $companyId = $_SESSION[SESS_USER]['company_id'];
+            
+            $userCount = $this->userModel->countByCompanyId($companyId);
+            $exhibitorCount = $this->exhibitorModel->countByCompanyId($companyId);
+            $customerCount = $this->customerModel->countByCompanyId($companyId);
 
             $this->render('admin/dashboard.view.php', [
                 'userCount' => $userCount,

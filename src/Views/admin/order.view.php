@@ -37,4 +37,4 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/script/order.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/order.js"></script>

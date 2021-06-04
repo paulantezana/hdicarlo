@@ -11,8 +11,8 @@ class Order extends Model
     {
         try {
             $currentDate = date('Y-m-d H:i:s');
-            $stmt = $this->db->prepare('INSERT INTO orders (date_of_issue, lat_long, picture_path, date_of_delivery, observation, exhibitor_id, user_id, created_at, created_user_id)
-                                                    VALUES (:date_of_issue, :lat_long, :picture_path, :date_of_delivery, :observation, :exhibitor_id, :user_id, :created_at, :created_user_id)');
+            $stmt = $this->db->prepare('INSERT INTO orders (date_of_issue, lat_long, picture_path, date_of_delivery, observation, company_id, exhibitor_id, user_id, created_at, created_user_id)
+                                                    VALUES (:date_of_issue, :lat_long, :picture_path, :date_of_delivery, :observation, :company_id, :exhibitor_id, :user_id, :created_at, :created_user_id)');
 
             $stmt->bindParam(':date_of_issue', $currentDate);
             $stmt->bindParam(':lat_long', $customer['latLong']);
@@ -20,6 +20,7 @@ class Order extends Model
             $stmt->bindParam(':date_of_delivery', $customer['dateOfDelivery']);
             $stmt->bindParam(':observation', $customer['observation']);
 
+            $stmt->bindParam(':company_id', $customer['companyId']);
             $stmt->bindParam(':exhibitor_id', $customer['exhibitorId']);
             $stmt->bindParam(':user_id', $customer['userId']);
 

@@ -7,10 +7,11 @@ class Customer extends Model
         parent::__construct('customers', 'customer_id', $connection);
     }
 
-    public function count()
+    public function countByCompanyId($companyId)
     {
         try {
-            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM customers WHERE state = 1");
+            $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM customers WHERE company_id = :company_id AND state = 1");
+            $stmt->bindParam(":company_id", $companyId);
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);
             }

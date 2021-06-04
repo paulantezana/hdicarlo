@@ -46,6 +46,7 @@ class OrderController extends Controller
             // authorization($this->connection, 'cliente', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
+            $companyId = $_SESSION[SESS_USER]['company_id'];
 
             $validate = $this->validate($body);
             if (!$validate->success) {
@@ -56,7 +57,7 @@ class OrderController extends Controller
                 'latLong' => $body['latitude'] . ',' . $body['longitude'],
                 'dateOfOrder' => $body['dateOfDelivery'],
                 'observation' => htmlspecialchars(trim($body['observation'])),
-    
+                'companyId' => $companyId,
                 'exhibitorId' => $body['exhibitorId'],
                 'userId' => $_SESSION[SESS_KEY],
             ], $_SESSION[SESS_KEY]);

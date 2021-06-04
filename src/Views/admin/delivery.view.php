@@ -30,4 +30,4 @@
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/script/delivery.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/delivery.js"></script>
