@@ -118,8 +118,8 @@
                     </div>
                 </div>
                 <div class="SnForm-item required">
-                    <label for="exhibitorGeoId" class="SnForm-label">Ciudad</label>
-                    <select id="exhibitorGeoId" required>
+                    <label for="exhibitorGeoLocationId" class="SnForm-label">Ciudad</label>
+                    <select id="exhibitorGeoLocationId" required>
                         <option value="">Seleccionar</option>
                     </select>
                 </div>

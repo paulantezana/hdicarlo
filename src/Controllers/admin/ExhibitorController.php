@@ -217,16 +217,12 @@ class ExhibitorController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $geoId = explode('_', $body['geoId']);
             $latLong = $body['latitude'] . ',' . $body['longitude'];
 
             $res->result = $this->exhibitorModel->insert([
                 'code' => htmlspecialchars($body['code']),
                 'sizeId' => htmlspecialchars($body['sizeId']),
-                'countryId' => $geoId[0],
-                'geoLevel1Id' => $geoId[1],
-                'geoLevel2Id' => $geoId[2],
-                'geoLevel3Id' => $geoId[3],
+                'geoLocationId' => htmlspecialchars($body['geoLocationId']),
                 'latLong' => $latLong,
                 'address' => htmlspecialchars($body['address']),
                 'customerId' => htmlspecialchars($body['customerId']),
@@ -251,18 +247,14 @@ class ExhibitorController extends Controller
             if (!$validate->success) {
                 throw new Exception($validate->message);
             }
-
-            $geoId = explode('_', $body['geoId']);
+            
             $latLong = $body['latitude'] . ',' . $body['longitude'];
 
             $currentDate = date('Y-m-d H:i:s');
             $this->exhibitorModel->updateById($body['exhibitorId'], [
                 'code' => htmlspecialchars($body['code']),
                 'size_id' => htmlspecialchars($body['sizeId']),
-                'country_id' => $geoId[0],
-                'geo_level_1_id' => $geoId[1],
-                'geo_level_2_id' => $geoId[2],
-                'geo_level_3_id' => $geoId[3],
+                'geo_location_id' => htmlspecialchars($body['geoLocationId']),
                 'lat_long' => $latLong,
                 'address' => htmlspecialchars($body['address']),
                 'customer_id' => htmlspecialchars($body['customerId']),
@@ -309,7 +301,7 @@ class ExhibitorController extends Controller
         $res->success = true;
 
         if ($type == 'create' || $type == 'update') {
-            if (($body['geoId'] ?? '') == '') {
+            if (($body['geoLocationId'] ?? '') == '') {
                 $res->message .= 'Falta especificar la ciudad | ';
                 $res->success = false;
             }

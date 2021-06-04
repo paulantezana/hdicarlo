@@ -125,7 +125,7 @@
                 method: 'POST',
                 body: {
                     documentNumber: searchDocumentNumber,
-                    documentType: 3,
+                    documentTypeId: 3,
                 }
             })
             .then(res => {

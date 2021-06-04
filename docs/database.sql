@@ -389,7 +389,13 @@ VALUES ('home','home','dashboard',true),
        ('customer','listar','listar clientes',true),
        ('customer','crear','crear nuevos cliente',true),
        ('customer','eliminar','Eliminar un cliente',true),
-       ('customer','modificar','Acualizar los clientes',true);
+       ('customer','modificar','Acualizar los clientes',true),
+
+       ('exhibitor','listar','listar clientes',true),
+       ('exhibitor','crear','crear nuevos cliente',true),
+       ('exhibitor','eliminar','Eliminar un cliente',true),
+       ('exhibitor','modificar','Acualizar los clientes',true);
+
 
 INSERT INTO app_payment_intervals(description, date_interval) VALUES ('Mensual','M'),
                                 ('Trimestral','3M'),

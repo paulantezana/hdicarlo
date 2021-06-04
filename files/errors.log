@@ -256,3 +256,11 @@ D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
 D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
 2021-06-03 08:22:35: 2 require_once(D:/local/hdicarlo/src/Models/Country.php): failed to open stream: No such file or directory
 D:\local\hdicarlo\src\Controllers\admin\CountryController.php(3)
+2021-06-03 21:17:54: 8 Undefined index: documentTypeId
+D:\local\hdicarlo\src\Controllers\PageController.php(82)
+2021-06-03 22:27:03: 8 Undefined offset: 1
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(227)
+2021-06-03 22:27:12: 8 Undefined offset: 1
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(227)
+2021-06-03 22:27:18: 8 Undefined offset: 1
+D:\local\hdicarlo\src\Controllers\admin\ExhibitorController.php(227)

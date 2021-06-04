@@ -25,11 +25,7 @@ class UserRole extends Model
     public function getAllByCompanyId(int $companyId)
     {
         try {
-            if($_SESSION[SESS_KEY] == 1){
-                $stmt = $this->db->prepare('SELECT * FROM user_roles WHERE state = 1 AND company_id = :company_id');
-            } else {
-                $stmt = $this->db->prepare('SELECT * FROM user_roles WHERE user_role_id > 1 AND state = 1 AND company_id = :company_id');
-            }
+            $stmt = $this->db->prepare('SELECT * FROM user_roles WHERE state = 1 AND company_id = :company_id');
             $stmt->bindParam(':company_id', $companyId);
             if (!$stmt->execute()) {
                 throw new Exception($stmt->errorInfo()[2]);

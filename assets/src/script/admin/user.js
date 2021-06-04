@@ -186,7 +186,7 @@ function prepareModalUser(mode = "") {
   document.getElementById("userIdentityDocumentNumber").parentElement.parentElement.parentElement.classList.remove("hidden");
   document.getElementById("userLastName").parentElement.parentElement.classList.remove("hidden");
   document.getElementById("userFullName").parentElement.parentElement.classList.remove("hidden");
-  document.getElementById("userState").parentElement.parentElement.classList.remove("hidden");
+  document.getElementById("userState").parentElement.classList.remove("hidden");
   document.getElementById("userUserRoleId").parentElement.classList.remove("hidden");
   document.getElementById("userPassword").parentElement.parentElement.classList.remove("hidden");
   document.getElementById("userPasswordConfirm").parentElement.parentElement.classList.remove("hidden");
@@ -228,7 +228,7 @@ function prepareModalUser(mode = "") {
       document.getElementById("userIdentityDocumentNumber").parentElement.parentElement.parentElement.classList.add("hidden");
       document.getElementById("userLastName").parentElement.parentElement.classList.add("hidden");
       document.getElementById("userFullName").parentElement.parentElement.classList.add("hidden");
-      document.getElementById("userState").parentElement.parentElement.classList.add("hidden");
+      document.getElementById("userState").parentElement.classList.add("hidden");
       document.getElementById("userUserRoleId").parentElement.classList.add("hidden");
 
       document.getElementById("userPassword").setAttribute("required", true);

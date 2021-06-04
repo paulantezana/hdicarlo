@@ -82,7 +82,7 @@
     }
 
     function CustomerSearchDocument() {
-        let searchIdentityDocumentCode = document.getElementById('customerIdentityDocumentId').value;
+        let customerIdentityDocumentId = document.getElementById('customerIdentityDocumentId').value;
         let searchDocumentNumber = document.getElementById('customerDocumentNumber').value
 
         SearchDocumentChangeState(true);
@@ -90,13 +90,18 @@
             method: 'POST',
             body: {
                 documentNumber: searchDocumentNumber,
-                documentTypeId: searchIdentityDocumentCode,
+                documentTypeId: customerIdentityDocumentId,
             }
         })
             .then(res => {
                 if (res.success) {
-                    document.getElementById('customerSocialReason').value = res.result.full_name;
-                    document.getElementById('customerFiscalAddress').value = res.result.full_address;
+                    if(customerIdentityDocumentId == 1){
+                        document.getElementById('customerSocialReason').value = `${res.result.full_name} ${res.result.father_last__name} ${res.result.mother_last_name}`;
+                        document.getElementById('customerFiscalAddress').value = res.result.full_address;
+                    } else {
+                        document.getElementById('customerSocialReason').value = res.result.full_name;
+                        document.getElementById('customerFiscalAddress').value = res.result.full_address;
+                    }
                 } else {
                     SnModal.error({
                         title: "Algo salió mal",

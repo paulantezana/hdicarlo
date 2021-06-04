@@ -53,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     }
   });
+
   exhibitorState.slimGeoLocation = new SlimSelect({
-    select: '#exhibitorGeoId',
+    select: '#exhibitorGeoLocationId',
     searchingText: 'Buscando...',
     // addToBody: true,
     ajax: function (search, callback) {
@@ -62,12 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
         callback('Escriba almenos 2 caracteres');
         return
       }
-      RequestApi.fetch('/admin/country/geoSearch', {
+      RequestApi.fetch('/page/searchLocationLastLevel', {
         method: 'POST',
         body: { search }
       }).then(res => {
         if (res.success) {
-          let data = res.result.map(item => ({ text: item.geo_name, value: item.geo_id }));
+          let data = res.result.map(item => ({ text: item.geo_name, value: item.geo_location_id }));
           callback(data);
         } else {
           callback(false);
@@ -106,8 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // FILTER
-
-//
 function exhibitorSetLoading(state) {
   exhibitorState.loading = state;
   let jsExhibitorAction = document.querySelectorAll(".jsExhibitorAction");
@@ -183,7 +182,7 @@ function exhibitorSubmit(e) {
   exhibitorSendData.code = document.getElementById('exhibitorCode').value;
   exhibitorSendData.sizeId = document.getElementById('exhibitorSizeId').value;
   exhibitorSendData.customerId = document.getElementById('exhibitorCustomerId').value;
-  exhibitorSendData.geoId = document.getElementById('exhibitorGeoId').value;
+  exhibitorSendData.geoLocationId = document.getElementById('exhibitorGeoLocationId').value;
   exhibitorSendData.address = document.getElementById('exhibitorAddress').value;
   exhibitorSendData.latitude = document.getElementById('exhibitorLatitude').value;
   exhibitorSendData.longitude = document.getElementById('exhibitorLongitude').value;
@@ -290,10 +289,10 @@ function exhibitorGetById(exhibitorId) {
         exhibitorState.slimGeoLocation.setData([
           {
             text: res.result.geo_name,
-            value: res.result.geo_id,
+            value: res.result.geo_location_id,
           },
         ]);
-        exhibitorState.slimGeoLocation.set(res.result.geo_id);
+        exhibitorState.slimGeoLocation.set(res.result.geo_location_id);
 
         SnModal.open(exhibitorState.modalName);
       } else {

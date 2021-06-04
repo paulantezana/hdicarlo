@@ -32,11 +32,11 @@
     <div class="SnCard SnMb-3" id="filterWrapper">
         <div class="SnCard-body">
             <div class="SnGrid s-grid-2 col-gap">
-                <div class="SnForm-item">
+                <div class="SnForm-item inner" style="margin-bottom: 0;">
                     <label for="chartStartDate" class="SnForm-label">Desde</label>
                     <input type="date" id="chartStartDate" class="SnForm-control" value="<?php echo date('Y-m-d', strtotime('-1 year')) ?>">
                 </div>
-                <div class="SnForm-item">
+                <div class="SnForm-item inner" style="margin-bottom: 0;">
                     <label for="chartEndDate" class="SnForm-label">Hasta</label>
                     <input type="date" id="chartEndDate" class="SnForm-control" value="<?php echo date('Y-m-d', strtotime('+1 day')) ?>">
                 </div>

@@ -6,6 +6,7 @@
                 <th>N° Documento</th>
                 <th>Razón comercial</th>
                 <th>Tamaño</th>
+                <th>Ciudad</th>
                 <th>Dirección</th>
                 <th style="width: 40px"></th>
             </tr>
@@ -17,6 +18,7 @@
                     <td><?= $row['customer_document_number'] ?></td>
                     <td><?= $row['customer_social_reason'] ?></td>
                     <td><?= $row['size_description'] ?></td>
+                    <td><?= $row['geo_name'] ?></td>
                     <td><a href="#" onclick="exhibitorSetPositionMpas('<?= $row['lat_long'] ?>')"><?= $row['address'] ?></a></td>
                     <td>
                         <div class="SnTable-action">
