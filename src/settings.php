@@ -44,7 +44,7 @@ define('APP_EMAIL','paulantezana.2@gmail.com');
 define('APP_PHONE', '+51977898402');
 define('APP_COLOR', '#F0B90B');
 
-define('APP_DEV',false);
+define('APP_DEV',true);
 
 define('FILE_PATH', '/files');
 

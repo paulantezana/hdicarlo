@@ -1,6 +1,8 @@
 <?php
 
 require_once MODEL_PATH . '/Order.php';
+require_once MODEL_PATH . '/OrderItem.php';
+require_once MODEL_PATH . '/Product.php';
 require_once MODEL_PATH . '/Exhibitor.php';
 require_once MODEL_PATH . '/ExhibitorHistory.php';
 
@@ -8,6 +10,7 @@ class OrderController extends Controller
 {
     private $connection;
     private $orderModel;
+    private $orderItemModel;
     private $exhibitorModel;
     private $exhibitorStatesModel;
 
@@ -15,6 +18,7 @@ class OrderController extends Controller
     {
         $this->connection = $connection;
         $this->orderModel = new Order($connection);
+        $this->orderItemModel = new OrderItem($connection);
         $this->exhibitorModel = new Exhibitor($connection);
         $this->exhibitorStatesModel = new ExhibitorHistory($connection);
     }
@@ -22,7 +26,12 @@ class OrderController extends Controller
     public function home()
     {
         try {
+            authorization($this->connection, 'order');
             $exhibitorId = $_GET['exhibitorId'] ?? 0;
+            $companyId = $_SESSION[SESS_USER]['company_id'];
+
+            $productModel = new Product($this->connection);
+            $products = $productModel->getAllByCompanyId($companyId);
 
             $exhibitor = $this->exhibitorModel->getById($exhibitorId);
             if($exhibitor == false){
@@ -31,6 +40,7 @@ class OrderController extends Controller
 
             $this->render('admin/order.view.php', [
                 'exhibitor' => $exhibitor,
+                'products' => $products,
             ], 'layouts/admin.layout.php');
         } catch (Exception $e) {
             $this->render('500.view.php', [
@@ -43,7 +53,7 @@ class OrderController extends Controller
         $res = new Result();
         $this->connection->beginTransaction();
         try {
-            // authorization($this->connection, 'cliente', 'modificar');
+            authorization($this->connection, 'order_create');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
             $companyId = $_SESSION[SESS_USER]['company_id'];
@@ -53,14 +63,27 @@ class OrderController extends Controller
                 throw new Exception($validate->message);
             }
 
-            $this->orderModel->insert([
+            $orderId = $this->orderModel->insert([
                 'latLong' => $body['latitude'] . ',' . $body['longitude'],
-                'dateOfOrder' => $body['dateOfDelivery'],
+                'dateOfDelivery' => $body['dateOfDelivery'],
                 'observation' => htmlspecialchars(trim($body['observation'])),
+                'total' => $body['total'],
                 'companyId' => $companyId,
                 'exhibitorId' => $body['exhibitorId'],
                 'userId' => $_SESSION[SESS_KEY],
             ], $_SESSION[SESS_KEY]);
+
+            foreach ($body['item'] as $key => $row) {
+                $this->orderItemModel->insert([
+                    'description'=> htmlspecialchars(trim($row['description'])),
+                    'observation'=> htmlspecialchars(trim($row['observation'])),
+                    'quantity'=> $row['quantity'],
+                    'unitPrice'=> $row['unitPrice'],
+                    'productId'=> $row['productId'],
+                    'total'=> $row['total'],
+                    'orderId'=> $orderId,
+                ],$_SESSION[SESS_KEY]);
+            }
 
             $this->exhibitorStatesModel->insert([
                 'exhibitorState' => 'ORDER',

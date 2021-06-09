@@ -1,0 +1,14 @@
+.ProductSelect {
+    display: grid;
+    grid-gap: 0.4rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    &-item {
+        // display: flex;
+        :first-child {
+            flex: auto;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+    }
+}

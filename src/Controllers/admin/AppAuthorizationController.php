@@ -19,13 +19,11 @@ class AppAuthorizationController extends  Controller
     public function home()
     {
         try {
-            authorization($this->connection, 'rol', 'listar');
+            authorization($this->connection, 'rol');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
-            // $appAuthorization = $this->appAuthorizationModel->getAllByUserRoleId($body['userRoleId']);
-
-            $appAuthorization = $this->appAuthorizationModel->getAll();
+            $appAuthorization = $this->listToTree($this->appAuthorizationModel->getAll());
             $userRole = $this->userRoleModel->getAll();
 
             $this->render('admin/appAuthorization.view.php', [
@@ -43,7 +41,7 @@ class AppAuthorizationController extends  Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'rol', 'modificar');
+            authorization($this->connection, 'rol_list');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -59,7 +57,7 @@ class AppAuthorizationController extends  Controller
     {
         $res = new Result();
         try {
-            authorization($this->connection, 'rol', 'modificar');
+            authorization($this->connection, 'rol_update');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -73,5 +71,25 @@ class AppAuthorizationController extends  Controller
             $res->message = $e->getMessage();
         }
         echo json_encode($res);
+    }
+
+    private function listToTree(array $list){
+        $parents = [];
+        foreach ($list as $key => $row) {
+            if($row['parent_id'] == 0){
+                $row['children'] = [];
+                array_push($parents, $row);
+            }
+        }
+
+        foreach ($parents as $key => $rowParent) {
+            foreach ($list as $k => $r) {
+                if($r['parent_id'] == $rowParent['app_authorization_id'] && $r['parent_id'] != 0){
+                    array_push($parents[$key]['children'], $r);
+                }
+            }
+        }
+
+        return $parents;
     }
 }

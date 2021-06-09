@@ -17,7 +17,7 @@ class CustomerController extends Controller
     public function home()
     {
         try {
-            // authorization($this->connection, 'cliente', 'listar');
+            authorization($this->connection, 'customer');
             $identityDocumentTypeModel = new IdentityDocumentType($this->connection);
             $identityDocumentType = $identityDocumentTypeModel->getAll();
 
@@ -35,7 +35,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'listar');
+            authorization($this->connection, 'customer_list');
             $page = htmlspecialchars(isset($_GET['page']) ? $_GET['page'] : 1);
             $limit = htmlspecialchars(isset($_GET['limit']) ? $_GET['limit'] : 10);
             $search = htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '');
@@ -57,7 +57,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'modificar');
+            authorization($this->connection, 'customer_list');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -89,7 +89,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'crear');
+            authorization($this->connection, 'customer_create');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
             $companyId = $_SESSION[SESS_USER]['company_id'];
@@ -121,7 +121,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'modificar');
+            authorization($this->connection, 'customer_update');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -156,7 +156,7 @@ class CustomerController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'eliminar');
+            authorization($this->connection, 'customer_delete');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 

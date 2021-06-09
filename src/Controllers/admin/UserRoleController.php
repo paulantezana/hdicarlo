@@ -17,7 +17,7 @@ class UserRoleController extends Controller
     public function index()
     {
         try {
-            Authorization($this->connection, 'rol', 'listar');
+            Authorization($this->connection, 'rol');
             $appAuthorizationModel = new AppAuthorization($this->connection);
             $appAuthorization = $appAuthorizationModel->getAll();
 
@@ -35,7 +35,7 @@ class UserRoleController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'rol', 'listar');
+            Authorization($this->connection, 'rol_list');
 
             $userRole = $this->userRoleModel->getAllWinDisabledByCompanyId($_SESSION[SESS_USER]['company_id']);
             $res->view = $this->render('admin/partials/roleList.php', [
@@ -52,7 +52,7 @@ class UserRoleController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'rol', 'listar');
+            Authorization($this->connection, 'rol_list');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
             if (!$body) {
@@ -72,7 +72,7 @@ class UserRoleController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'rol', 'crear');
+            Authorization($this->connection, 'rol_create');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -95,7 +95,7 @@ class UserRoleController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'rol', 'modificar');
+            Authorization($this->connection, 'rol_update');
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);
 
@@ -125,7 +125,7 @@ class UserRoleController extends Controller
     {
         $res = new Result();
         try {
-            Authorization($this->connection, 'rol', 'eliminar');
+            Authorization($this->connection, 'rol_delete');
 
             $postData = file_get_contents("php://input");
             $body = json_decode($postData, true);

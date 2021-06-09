@@ -27,7 +27,7 @@ class ExhibitorController extends Controller
     public function home()
     {
         try {
-            // authorization($this->connection, 'cliente', 'listar');
+            authorization($this->connection, 'exhibitor');
             $sizeModel = new Size($this->connection);
             $size = $sizeModel->getAll();
 
@@ -51,6 +51,8 @@ class ExhibitorController extends Controller
     public function detail()
     {
         try {
+            authorization($this->connection, 'exhibitor');
+
             $exhibitorId = $_GET['exhibitorId'] ?? 0;
             if ($exhibitorId == 0) {
                 $this->redirect('/admin');
@@ -138,13 +140,12 @@ class ExhibitorController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'listar');
+            authorization($this->connection, 'exhibitor_list');
             $page = htmlspecialchars(isset($_GET['page']) ? $_GET['page'] : 1);
             $limit = htmlspecialchars(isset($_GET['limit']) ? $_GET['limit'] : 10);
             $search = htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : '');
             $companyId = $_SESSION[SESS_USER]['company_id'];
 
-            // public function paginateByCompanyId(int $companyId, int $page, int $limit = 10, string $search = '')
             $exhibitor = $this->exhibitorModel->paginateByCompanyId($companyId, $page, $limit, $search);
 
             $res->view = $this->render('admin/partials/exhibitorTable.php', [
@@ -161,7 +162,7 @@ class ExhibitorController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'modificar');
+            authorization($this->connection, 'exhibitor_list');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -177,7 +178,6 @@ class ExhibitorController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'modificar');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
             $companyId = $_SESSION[SESS_USER]['company_id'];
@@ -212,7 +212,7 @@ class ExhibitorController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'crear');
+            authorization($this->connection, 'exhibitor_create');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
             $companyId = $_SESSION[SESS_USER]['company_id'];
@@ -245,7 +245,7 @@ class ExhibitorController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'modificar');
+            authorization($this->connection, 'exhibitor_update');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -281,7 +281,7 @@ class ExhibitorController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'eliminar');
+            authorization($this->connection, 'exhibitor_delete');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 

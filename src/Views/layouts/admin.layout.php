@@ -118,29 +118,36 @@
                                 <a href="<?= URL_PATH ?>/admin"><i class="fas fa-tachometer-alt AsideMenu-icon"></i><span>Inicio</span> </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (menuIsAuthorized('home')) : ?>
+                        <?php if (menuIsAuthorized('order')) : ?>
                             <li>
                                 <a href="<?= URL_PATH ?>/admin/order"><i class="fas fa-directions AsideMenu-icon"></i><span>Pedido</span> </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (menuIsAuthorized('home')) : ?>
+                        <?php if (menuIsAuthorized('delivery')) : ?>
                             <li>
                                 <a href="<?= URL_PATH ?>/admin/delivery"><i class="fas fa-shopping-basket AsideMenu-icon"></i><span>Entrega</span> </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (menuIsAuthorized('home')) : ?>
-                            <li>
-                                <a href="<?= URL_PATH ?>/admin/customer"><i class="far fa-address-book AsideMenu-icon"></i><span>Clientes</span> </a>
-                            </li>
-                        <?php endif; ?>
-                        <?php if (menuIsAuthorized('home')) : ?>
+                        <?php if (menuIsAuthorized('exhibitor')) : ?>
                             <li>
                                 <a href="<?= URL_PATH ?>/admin/exhibitor"><i class="fas fa-charging-station AsideMenu-icon"></i><span>Hexibidoras</span> </a>
                             </li>
                         <?php endif; ?>
-                        <?php if (menuIsAuthorized('home')) : ?>
+                        <?php if (menuIsAuthorized(['customer', 'product'])) : ?>
                             <li>
-                                <a href="<?= URL_PATH ?>/admin/exhibitor/monitoring"><i class="fas fa-desktop AsideMenu-icon"></i><span>Monitoreo</span></a>
+                                <a href="#"><i class="fas fa-toolbox AsideMenu-icon"></i><span>Mantenimiento</span></a>
+                                <ul>
+                                    <?php if (menuIsAuthorized('customer')) : ?>
+                                        <li>
+                                            <a href="<?= URL_PATH ?>/admin/customer"><i class="far fa-address-book AsideMenu-icon"></i><span>Clientes</span> </a>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if (menuIsAuthorized('product')) : ?>
+                                        <li>
+                                            <a href="<?= URL_PATH ?>/admin/product"><i class="fas fa-boxes AsideMenu-icon"></i><span>Productos</span> </a>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
                             </li>
                         <?php endif; ?>
                         <?php if (menuIsAuthorized(['company', 'user', 'rol'])) : ?>
@@ -160,6 +167,33 @@
                                     <?php if (menuIsAuthorized('rol')) : ?>
                                         <li>
                                             <a href="<?= URL_PATH ?>/admin/appAuthorization"><i class="fas fa-user-tag AsideMenu-icon"></i><span>Roles</span></a>
+                                        </li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                        <?php endif; ?>
+                        <?php if (menuIsAuthorized(['report'])) : ?>
+                            <li>
+                                <a href="#"><i class="fas fa-chart-pie AsideMenu-icon"></i><span>Reportes</span></a>
+                                <ul>
+                                    <?php if (menuIsAuthorized('report')) : ?>
+                                        <li>
+                                            <a href="<?= URL_PATH ?>/admin/exhibitor/monitoring"><i class="fas fa-desktop AsideMenu-icon"></i><span>Monitoreo</span></a>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if (menuIsAuthorized('report')) : ?>
+                                        <li>
+                                            <a href="<?= URL_PATH ?>/admin/income"><i class="fas fa-hand-holding-usd AsideMenu-icon"></i><span>Reporte ingreso</span></a>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if (menuIsAuthorized('report')) : ?>
+                                        <li>
+                                            <a href="<?= URL_PATH ?>/admin/report/orderReport"><i class="fas fa-directions AsideMenu-icon"></i><span>Reporte orden</span></a>
+                                        </li>
+                                    <?php endif; ?>
+                                    <?php if (menuIsAuthorized('report')) : ?>
+                                        <li>
+                                            <a href="<?= URL_PATH ?>/admin/report/deliveryReport"><i class="fas fa-shopping-basket AsideMenu-icon"></i><span>Reporte Entrega</span></a>
                                         </li>
                                     <?php endif; ?>
                                 </ul>

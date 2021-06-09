@@ -21,7 +21,7 @@ function requireToVar($file, $parameter)
     return ob_get_clean();
 }
 
-function authorization(PDO $connection, string $module, string $action, string $errorMessage = '')
+function authorization(PDO $connection, string $module, string $errorMessage = '')
 {
     $res = new Result();
     if (!isset($_SESSION[SESS_KEY])) {
@@ -34,14 +34,12 @@ function authorization(PDO $connection, string $module, string $action, string $
         die();
     }
 
-    $stmt = $connection->prepare('SELECT count(*) as count FROM user_role_authorizations as ur
-                            INNER JOIN app_authorizations app ON ur.app_authorization_id = app.app_authorization_id
-                            WHERE ur.user_role_id = :user_role_id AND app.module = :module AND app.action = :action
-                            GROUP BY app.module');
+    $stmt = $connection->prepare('SELECT count(*) as count FROM user_role_authorizations AS ur
+                            INNER JOIN app_authorizations AS app ON ur.app_authorization_id = app.app_authorization_id
+                            WHERE ur.user_role_id = :user_role_id AND app.module = :module');
     $stmt->execute([
         ':user_role_id' => $_SESSION[SESS_USER]['user_role_id'] ?? 0,
         ':module' => $module,
-        ':action' => $action,
     ]);
 
     $data = $stmt->fetch();

@@ -282,3 +282,31 @@ D:\local\hdicarlo\src\Controllers\PageController.php(41)
 D:\local\hdicarlo\src\Controllers\PageController.php(41)
 2021-06-04 08:08:41: 8 Undefined index: HTTP_ACCEPT
 D:\local\hdicarlo\src\Controllers\PageController.php(41)
+2021-06-08 16:42:53: 8 Undefined index: action
+D:\local\hdicarlo\src\Views\admin\appAuthorization.view.php(35)
+2021-06-08 16:44:20: 8 Undefined index: action
+D:\local\hdicarlo\src\Views\admin\appAuthorization.view.php(35)
+2021-06-08 16:44:34: 8 Undefined index: action
+D:\local\hdicarlo\src\Views\admin\appAuthorization.view.php(35)
+2021-06-08 16:48:49: 8 Undefined index: action
+D:\local\hdicarlo\src\Views\admin\appAuthorization.view.php(35)
+2021-06-08 18:29:32: 2 require(D:/local/hdicarlo/src/Views/admin/partials/productTable.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-08 18:45:41: 2 require(D:/local/hdicarlo/src/Views/admin/partials/productTable.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-08 18:46:21: 2 require(D:/local/hdicarlo/src/Views/admin/partials/productTable.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-08 18:46:55: 2 require(D:/local/hdicarlo/src/Views/admin/partials/productTable.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-08 18:47:09: 2 require(D:/local/hdicarlo/src/Views/admin/partials/productTable.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-08 18:49:48: 2 require(D:/local/hdicarlo/src/Views/admin/partials/productTable.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-08 18:50:02: 2 require(D:/local/hdicarlo/src/Views/admin/partials/productTable.php): failed to open stream: No such file or directory
+D:\local\hdicarlo\src\Helpers\Common.php(20)
+2021-06-08 19:39:36: 8 Undefined variable: products
+D:\local\hdicarlo\src\Views\admin\order.view.php(18)
+2021-06-09 11:59:07: 8 Undefined index: ReportOrder
+D:\local\hdicarlo\src\Views\admin\partials\reportOrderTable.php(83)
+2021-06-09 12:34:10: 8 Undefined index: entrustId
+D:\local\hdicarlo\src\Controllers\admin\ReportController.php(61)

@@ -1,11 +1,7 @@
 <div class="SnContentAside UserRole">
     <div class="SnContentAside-left SnMb-5">
         <div id="userRoleTable" class="SnMb-2"></div>
-        <div
-            title="Crear nuevo rol"
-            style="border-style: dashed; line-height: 3.2em;"
-            class="SnBtn block jsUserRoleOption"
-            onclick="userRoleShowModalCreate()">
+        <div title="Crear nuevo rol" style="border-style: dashed; line-height: 3.2em;" class="SnBtn block jsUserRoleOption" onclick="userRoleShowModalCreate()">
             <i class="fas fa-plus SnMr-2"></i>Agregar
         </div>
     </div>
@@ -22,27 +18,31 @@
                         <table class="SnTable">
                             <thead>
                                 <tr>
-                                    <th>Modulo</th>
-                                    <th>Accion</th>
                                     <th>Descripcion</th>
                                     <th style="width: 50px"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($parameter['appAuthorization'] ?? [] as $row): ?>
+                                <?php foreach ($parameter['appAuthorization'] ?? [] as $row) : ?>
                                     <tr data-id="<?= $row['app_authorization_id'] ?>">
-                                        <td><?= $row['module'] ?></td>
-                                        <td><?= $row['action'] ?></td>
-                                        <td><?= $row['description'] ?></td>
+                                        <td><strong><?= $row['description'] ?></strong></td>
                                         <td>
-                                            <input type="checkbox" id="autState<?= $row['app_authorization_id']?>">
+                                            <input type="checkbox" class="SnSwitch" id="autState<?= $row['app_authorization_id'] ?>">
                                         </td>
                                     </tr>
+                                    <?php foreach ($row['children'] as $rowChildren) : ?>
+                                        <tr data-id="<?= $rowChildren['app_authorization_id'] ?>">
+                                            <td><i class="far fa-dot-circle SnMr-2 SnMl-2"></i> <?= $rowChildren['description'] ?></td>
+                                            <td>
+                                                <input type="checkbox" class="SnSwitch" id="autState<?= $rowChildren['app_authorization_id'] ?>">
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
-                    <button class="SnBtn primary hidden lg block jsUserRoleOption" id="userRoleAuthSave" onclick="userRoleSaveAuthorization()" ><i class="fas fa-save SnMr-2"></i>Guardar cambios</button>
+                    <button class="SnBtn primary hidden lg block jsUserRoleOption" id="userRoleAuthSave" onclick="userRoleSaveAuthorization()"><i class="fas fa-save SnMr-2"></i>Guardar cambios</button>
                 </div>
             </div>
         </div>
@@ -76,4 +76,3 @@
         </div>
     </div>
 </div>
-

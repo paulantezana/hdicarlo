@@ -10,10 +10,9 @@ class AppAuthorization extends Model
     public function getMenu(int $userRoleId)
     {
         try {
-            $stmt = $this->db->prepare('SELECT app.module FROM user_role_authorizations as ur
-                                        INNER JOIN app_authorizations app ON ur.app_authorization_id = app.app_authorization_id
-                                        WHERE ur.user_role_id = :user_role_id
-                                        GROUP BY app.module');
+            $stmt = $this->db->prepare('SELECT app.module FROM user_role_authorizations AS ur
+                                        INNER JOIN app_authorizations AS app ON ur.app_authorization_id = app.app_authorization_id
+                                        WHERE ur.user_role_id = :user_role_id AND app.parent_id = 0');
             $stmt->bindParam(':user_role_id', $userRoleId);
 
             if (!$stmt->execute()) {

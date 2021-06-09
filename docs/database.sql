@@ -71,8 +71,8 @@ CREATE TABLE companies(
 CREATE TABLE app_authorizations(
     app_authorization_id INT AUTO_INCREMENT NOT NULL,
     module VARCHAR(64) NOT NULL,
-    action VARCHAR(64) DEFAULT '',
     description VARCHAR(64) DEFAULT '',
+    parent_id INT NOT NULL,
     state TINYINT DEFAULT 1,
     CONSTRAINT pk_app_authorizations PRIMARY KEY (app_authorization_id)
 ) ENGINE=InnoDB;
@@ -332,6 +332,22 @@ CREATE TABLE exhibitor_maintenances(
     CONSTRAINT pk_exhibitor_maintenances PRIMARY KEY (exhibitor_maintenance_id)
 ) ENGINE=InnoDB;
 
+CREATE TABLE products(
+    product_id INT AUTO_INCREMENT NOT NULL,
+    title VARCHAR(255) DEFAULT '',
+    bar_code VARCHAR(32) DEFAULT '',
+    price DOUBLE(11,2) DEFAULT 0.00,
+
+    company_id INT NOT NULL,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_products PRIMARY KEY (product_id)
+) ENGINE=InnoDB;
+
 CREATE TABLE orders(
     order_id INT AUTO_INCREMENT NOT NULL,
     date_of_issue DATETIME,
@@ -339,6 +355,10 @@ CREATE TABLE orders(
     picture_path VARCHAR(64) DEFAULT '',
     date_of_delivery DATE,
     observation VARCHAR(64) DEFAULT '',
+    total double(11,2) DEFAULT 0.00,
+
+    canceled TINYINT DEFAULT 0,
+    canceled_observation VARCHAR(255) DEFAULT '',
 
     company_id INT NOT NULL,
     exhibitor_id INT NOT NULL,
@@ -348,8 +368,27 @@ CREATE TABLE orders(
     created_at DATETIME,
     created_user_id INT,
     updated_user_id INT,
-    state TINYINT DEFAULT 1,
     CONSTRAINT pk_orders PRIMARY KEY (order_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE order_items(
+    order_item_id INT AUTO_INCREMENT NOT NULL,
+
+    description VARCHAR(255) DEFAULT '',
+    observation VARCHAR(255) DEFAULT '',
+    quantity double(11,2) DEFAULT 0.00,
+    unit_price double(11,2) DEFAULT 0.00,
+    total double(11,2) DEFAULT 0.00,
+
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_order_items PRIMARY KEY (order_item_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE deliveries(
@@ -359,6 +398,10 @@ CREATE TABLE deliveries(
     picture_path VARCHAR(64) DEFAULT '',
     date_of_delivery DATE,
     observation VARCHAR(64) DEFAULT '',
+    total double(11,2) DEFAULT 0.00,
+
+    canceled TINYINT DEFAULT 0,
+    canceled_observation VARCHAR(255) DEFAULT '',
 
     company_id INT NOT NULL,
     exhibitor_id INT NOT NULL,
@@ -372,32 +415,76 @@ CREATE TABLE deliveries(
     CONSTRAINT pk_deliveries PRIMARY KEY (deliveriy_id)
 ) ENGINE=InnoDB;
 
-INSERT INTO app_authorizations (module,action,description,state)
-VALUES ('home','home','dashboard',true),
+CREATE TABLE delivery_items(
+    delivery_item_id INT AUTO_INCREMENT NOT NULL,
+    
+    description VARCHAR(255) DEFAULT '',
+    observation VARCHAR(255) DEFAULT '',
+    quantity double(11,2) DEFAULT 0.00,
+    unit_price double(11,2) DEFAULT 0.00,
+    total double(11,2) DEFAULT 0.00,
 
-       ('rol','listar','listar roles',true),
-       ('rol','crear','crear nuevos rol',true),
-       ('rol','eliminar','Eliminar un rol',true),
-       ('rol','modificar','Acualizar los roles',true),
+    deliveriy_id INT NOT NULL,
+    product_id INT NOT NULL,
 
-       ('user','listar','listar usuarios',true),
-       ('user','crear','crear nuevo usuarios',true),
-       ('user','eliminar','Eliminar un usuario',true),
-       ('user','modificar','Acualizar los datos del usuario exepto la contraseña',true),
-       ('user','modificarContraseña','Solo se permite actualizar la contraseña',true),
+    updated_at DATETIME,
+    created_at DATETIME,
+    created_user_id INT,
+    updated_user_id INT,
+    state TINYINT DEFAULT 1,
+    CONSTRAINT pk_delivery_items PRIMARY KEY (delivery_item_id)
+) ENGINE=InnoDB;
 
-       ('company','listar','listar roles',true),
-       ('company','modificar','Actualizar empresa',true),
+INSERT INTO app_authorizations (module,description,parent_id,state)
+VALUES ('home','Dashboard',0,true),
 
-       ('customer','listar','listar clientes',true),
-       ('customer','crear','crear nuevos cliente',true),
-       ('customer','eliminar','Eliminar un cliente',true),
-       ('customer','modificar','Acualizar los clientes',true),
+       ('rol', 'Roles', 0, true), -- 2
+       ('rol_list', 'Listar roles', 2, true),
+       ('rol_create', 'Crear nuevo rol', 2, true),
+       ('rol_delete', 'Eliminar un rol', 2, true),
+       ('rol_update', 'Acualizar los roles', 2, true),
 
-       ('exhibitor','listar','listar clientes',true),
-       ('exhibitor','crear','crear nuevos cliente',true),
-       ('exhibitor','eliminar','Eliminar un cliente',true),
-       ('exhibitor','modificar','Acualizar los clientes',true);
+       ('user', 'Usuarios', 0, true), -- 7
+       ('user_list', 'Listar usuarios', 7, true),
+       ('user_create', 'Crear nuevo usuarios', 7, true),
+       ('user_delete', 'Eliminar un usuario', 7, true),
+       ('user_update', 'Acualizar los datos del usuario exepto la contraseña', 7, true),
+       ('user_update_password', 'Solo se permite actualizar la contraseña', 7, true),
+
+       ('company','Empresa',0,true), -- 13
+       ('company_update','Actualizar empresa',13,true),
+
+       ('customer','Clientes',0,true), -- 15
+       ('customer_list','Listar clientes',15,true),
+       ('customer_create','Crear nuevos cliente',15,true),
+       ('customer_delete','Eliminar un cliente',15,true),
+       ('customer_update','Acualizar los clientes',15,true),
+
+        ('product','Productos',0,true), -- 20
+        ('product_list','Listar productos',20,true),
+        ('product_create','Crear nuevos producto',20,true),
+        ('product_delete','Eliminar un producto',20,true),
+        ('product_update','Acualizar los productos',20,true),
+
+        ('order','Orden',0,true), -- 25
+        ('order_create','Crear orden',25,true),
+        ('order_cancel','Cancelar orden',25,true),
+        ('order_report','Reporte de ordenes',25,true),
+
+        ('delivery','Entrega',0,true), -- 29
+        ('delivery_create','Crear entrega',29,true),
+        ('delivery_cancel','Cancelar entrega',29,true),
+        ('delivery_report','Reporte de entregas',29,true),
+
+        ('report','Reporte monitoreo',0,true), -- 33
+        ('report_monitoring','Reporte monitoreo',33,true),
+        ('report_income','Reporte de ingresos',33,true),
+
+        ('exhibitor','Exhibidor',0,true), -- 36
+        ('exhibitor_list','Listar Exhibidores',36,true),
+        ('exhibitor_create','Crear nuevos exhibidor',36,true),
+        ('exhibitor_delete','Eliminar un exhibidor',36,true),
+        ('exhibitor_update','Acualizar los exhibidores',36,true);
 
 
 INSERT INTO app_payment_intervals(description, date_interval) VALUES ('Mensual','M'),

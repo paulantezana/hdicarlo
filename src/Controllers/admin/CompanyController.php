@@ -16,6 +16,7 @@ class CompanyController extends Controller
     public function home()
     {
         try {
+            authorization($this->connection, 'company');
             $company = $this->companyModel->getById($_SESSION[SESS_USER]['company_id']);
             $this->render('admin/company.view.php', [
                 'company' => $company,
@@ -29,6 +30,7 @@ class CompanyController extends Controller
     public function backoup()
     {
         try {
+            authorization($this->connection, 'company');
             $company = $this->companyModel->getById($_SESSION[SESS_USER]['company_id']);
             $this->render('admin/backoup.view.php', [
                 'company' => $company,
@@ -44,7 +46,7 @@ class CompanyController extends Controller
     {
         $res = new Result();
         try {
-            // authorization($this->connection, 'cliente', 'modificar');
+            authorization($this->connection, 'company_update');
             $postData = file_get_contents('php://input');
             $body = json_decode($postData, true);
 
@@ -81,6 +83,7 @@ class CompanyController extends Controller
     {
         $res = new Result();
         try {
+            authorization($this->connection, 'company_update');
             $companyId = $_POST['companyId'];
 
             if (isset($_FILES['logo'])) {
@@ -109,6 +112,7 @@ class CompanyController extends Controller
     {
         $res = new Result();
         try {
+            authorization($this->connection, 'company_update');
             $companyId = $_POST['companyId'];
 
             if (isset($_FILES['logo'])) {
