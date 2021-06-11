@@ -42,9 +42,9 @@ define('APP_AUTHOR_WEB', 'http://paulantezana.com/');
 define('APP_DESCRIPTION','Control de entrega');
 define('APP_EMAIL','paulantezana.2@gmail.com');
 define('APP_PHONE', '+51977898402');
-define('APP_COLOR', '#F0B90B');
+define('APP_COLOR', '#364EC7');
 
-define('APP_DEV',true);
+define('APP_DEV',false);
 
 define('FILE_PATH', '/files');
 

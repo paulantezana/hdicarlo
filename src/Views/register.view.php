@@ -69,8 +69,10 @@
                         <span class="SnControl-suffix far fa-eye togglePassword"></span>
                     </div>
                 </div>
-                <input type="submit" value="Registrarse" name="commit" class="SnBtn primary radio lg block SnMb-5">
-                <a href="<?= URL_PATH ?>/user/login" class="SnBtn radio block">Login</a>
+                <button type="submit" class="SnBtn block primary radio lg SnMb-5" name="commit"><i class="fas fa-sign-in-alt SnMr-2"></i>Registrarse</button>
+                <p style="text-align: center">
+                    <a href="<?= URL_PATH ?>/user/login">Iniciar sesión</a>
+                </p>
             </form>
         </div>
     </div>

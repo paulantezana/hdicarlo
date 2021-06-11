@@ -178,22 +178,22 @@
                                 <ul>
                                     <?php if (menuIsAuthorized('report')) : ?>
                                         <li>
-                                            <a href="<?= URL_PATH ?>/admin/exhibitor/monitoring"><i class="fas fa-desktop AsideMenu-icon"></i><span>Monitoreo</span></a>
+                                            <a href="<?= URL_PATH ?>/admin/exhibitor/monitoring"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Monitoreo</span></a>
                                         </li>
                                     <?php endif; ?>
                                     <?php if (menuIsAuthorized('report')) : ?>
                                         <li>
-                                            <a href="<?= URL_PATH ?>/admin/income"><i class="fas fa-hand-holding-usd AsideMenu-icon"></i><span>Reporte ingreso</span></a>
+                                            <a href="<?= URL_PATH ?>/admin/report/incomeReport"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Reporte ingreso</span></a>
                                         </li>
                                     <?php endif; ?>
                                     <?php if (menuIsAuthorized('report')) : ?>
                                         <li>
-                                            <a href="<?= URL_PATH ?>/admin/report/orderReport"><i class="fas fa-directions AsideMenu-icon"></i><span>Reporte orden</span></a>
+                                            <a href="<?= URL_PATH ?>/admin/report/orderReport"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Reporte pedido</span></a>
                                         </li>
                                     <?php endif; ?>
                                     <?php if (menuIsAuthorized('report')) : ?>
                                         <li>
-                                            <a href="<?= URL_PATH ?>/admin/report/deliveryReport"><i class="fas fa-shopping-basket AsideMenu-icon"></i><span>Reporte Entrega</span></a>
+                                            <a href="<?= URL_PATH ?>/admin/report/deliveryReport"><i class="far fa-dot-circle AsideMenu-icon"></i><span>Reporte Entrega</span></a>
                                         </li>
                                     <?php endif; ?>
                                 </ul>

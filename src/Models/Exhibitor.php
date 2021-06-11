@@ -26,6 +26,24 @@ class Exhibitor extends Model
         }
     }
 
+    public function getAllByCompanyId(int $companyId)
+    {
+        try {
+            $stmt = $this->db->prepare("SELECT exh.*,
+                                                cus.social_reason as customer_social_reason
+                                            FROM exhibitors AS exh
+                                            INNER JOIN customers AS cus ON exh.customer_id = cus.customer_id
+                                            WHERE exh.company_id = :company_id AND exh.state = 1");
+            $stmt->bindParam(":company_id", $companyId);
+            if (!$stmt->execute()) {
+                throw new Exception($stmt->errorInfo()[2]);
+            }
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            throw new Exception('Error en metodo : ' . __FUNCTION__ . ' | ' . $e->getMessage());
+        }
+    }
+
     public function getById(int $id)
     {
         try {

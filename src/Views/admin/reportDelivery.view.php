@@ -1,16 +1,16 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class=" fas fa-list-ul SnMr-2"></i> <strong>PEDIDOS</strong>
+            <i class=" fas fa-list-ul SnMr-2"></i> <strong>ENTREGAS</strong>
         </div>
         <div class="SnToolbar-right">
-            <div class="SnBtn radio lg icon SnMr-2 jsReportOrderAction" onclick="printArea('reportOrderTable')" title="Imprimir">
+            <div class="SnBtn radio lg icon SnMr-2 jsReportDeliveryAction" onclick="printArea('reportDeliveryTable')" title="Imprimir">
                 <i class="fas fa-print"></i>
             </div>
-            <div class="SnBtn radio lg icon SnMr-2 jsReportOrderAction" onclick="reportOrderToExcel()" title="Exportar">
+            <div class="SnBtn radio lg icon SnMr-2 jsReportDeliveryAction" onclick="reportDeliveryToExcel()" title="Exportar">
                 <i class="fas fa-file-excel"></i>
             </div>
-            <div class="SnBtn radio lg icon SnMr-2 jsReportOrderAction" onclick="reportOrderList()" title="Actualizar">
+            <div class="SnBtn radio lg icon SnMr-2 jsReportDeliveryAction" onclick="reportDeliveryList()" title="Actualizar">
                 <i class="fas fa-sync-alt"></i>
             </div>
         </div>
@@ -47,19 +47,19 @@
                     </div>
                 </div>
             </div>
-            <div id="reportOrderTable" class="SnMb-5"></div>
+            <div id="reportDeliveryTable" class="SnMb-5"></div>
         </div>
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/build/script/admin/orderReport.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/deliveryReport.js"></script>
 
-<div class="SnModal-wrapper" data-modal="orderItemModalForm" data-maskclose="false">
+<div class="SnModal-wrapper" data-modal="deliveryItemModalForm" data-maskclose="false">
     <div class="SnModal">
-        <div class="SnModal-close" data-modalclose="orderItemModalForm">
+        <div class="SnModal-close" data-modalclose="deliveryItemModalForm">
             <i class="fas fa-times"></i>
         </div>
-        <div class="SnModal-header"><i class="fas fa-directions SnMr-2"></i> Pedido detalle</div>
-        <div class="SnModal-body" id="orderItemModalBody"></div>
+        <div class="SnModal-header"><i class="fas fa-shopping-basket SnMr-2"></i> Entrega detalle</div>
+        <div class="SnModal-body" id="deliveryItemModalBody"></div>
     </div>
 </div>

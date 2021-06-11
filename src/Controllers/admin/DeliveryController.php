@@ -1,13 +1,16 @@
 <?php
 
-require_once MODEL_PATH . '/Delivery.php';
-require_once MODEL_PATH . '/Exhibitor.php';
-require_once MODEL_PATH . '/ExhibitorHistory.php';
+require_once(MODEL_PATH . '/Delivery.php');
+require_once(MODEL_PATH . '/DeliveryItem.php');
+require_once(MODEL_PATH . '/Product.php');
+require_once(MODEL_PATH . '/Exhibitor.php');
+require_once(MODEL_PATH . '/ExhibitorHistory.php');
 
 class DeliveryController extends Controller
 {
     private $connection;
     private $deliveryModel;
+    private $deliveryItemModel;
     private $exhibitorModel;
     private $exhibitorStatesModel;
 
@@ -15,6 +18,7 @@ class DeliveryController extends Controller
     {
         $this->connection = $connection;
         $this->deliveryModel = new Delivery($connection);
+        $this->deliveryItemModel = new DeliveryItem($connection);
         $this->exhibitorModel = new Exhibitor($connection);
         $this->exhibitorStatesModel = new ExhibitorHistory($connection);
     }
@@ -22,15 +26,21 @@ class DeliveryController extends Controller
     public function home()
     {
         try {
+            // authorization($this->connection, 'order');
             $exhibitorId = $_GET['exhibitorId'] ?? 0;
+            $companyId = $_SESSION[SESS_USER]['company_id'];
+
+            $productModel = new Product($this->connection);
+            $products = $productModel->getAllByCompanyId($companyId);
 
             $exhibitor = $this->exhibitorModel->getById($exhibitorId);
-            if($exhibitor == false){
+            if ($exhibitor == false) {
                 $exhibitor = [];
             }
 
             $this->render('admin/delivery.view.php', [
                 'exhibitor' => $exhibitor,
+                'products' => $products,
             ], 'layouts/admin.layout.php');
         } catch (Exception $e) {
             $this->render('500.view.php', [
@@ -38,7 +48,8 @@ class DeliveryController extends Controller
             ], 'layouts/admin.layout.php');
         }
     }
-    public function save(){
+    public function save()
+    {
         $res = new Result();
         $this->connection->beginTransaction();
         try {
@@ -51,21 +62,34 @@ class DeliveryController extends Controller
             if (!$validate->success) {
                 throw new Exception($validate->message);
             }
-            
+
             $currentDate = date('Y-m-d H:i:s');
-            $this->deliveryModel->insert([
+            $deliveryId = $this->deliveryModel->insert([
                 'latLong' => $body['latitude'] . ',' . $body['longitude'],
                 'dateOfDelivery' => $currentDate,
                 'observation' => htmlspecialchars(trim($body['observation'])),
+                'total' => $body['total'],
                 'companyId' => $companyId,
                 'exhibitorId' => $body['exhibitorId'],
                 'userId' => $_SESSION[SESS_KEY],
             ], $_SESSION[SESS_KEY]);
 
+            foreach ($body['item'] as $key => $row) {
+                $this->deliveryItemModel->insert([
+                    'description' => htmlspecialchars(trim($row['description'])),
+                    'observation' => htmlspecialchars(trim($row['observation'])),
+                    'quantity' => $row['quantity'],
+                    'unitPrice' => $row['unitPrice'],
+                    'productId' => $row['productId'],
+                    'total' => $row['total'],
+                    'deliveryId' => $deliveryId,
+                ], $_SESSION[SESS_KEY]);
+            }
+
             $this->exhibitorStatesModel->insert([
                 'exhibitorState' => 'DELIVERY',
                 'exhibitorId' => $body['exhibitorId'],
-            ],$_SESSION[SESS_KEY]);
+            ], $_SESSION[SESS_KEY]);
 
             $this->connection->commit();
             $res->success = true;
@@ -77,7 +101,8 @@ class DeliveryController extends Controller
         echo json_encode($res);
     }
 
-    private function validate($body){
+    private function validate($body)
+    {
         $res = new Result();
         $res->success = true;
 

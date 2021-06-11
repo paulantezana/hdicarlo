@@ -392,7 +392,7 @@ CREATE TABLE order_items(
 ) ENGINE=InnoDB;
 
 CREATE TABLE deliveries(
-    deliveriy_id INT AUTO_INCREMENT NOT NULL,
+    delivery_id INT AUTO_INCREMENT NOT NULL,
     date_of_issue DATETIME,
     lat_long VARCHAR(32) DEFAULT '',
     picture_path VARCHAR(64) DEFAULT '',
@@ -412,7 +412,7 @@ CREATE TABLE deliveries(
     created_user_id INT,
     updated_user_id INT,
     state TINYINT DEFAULT 1,
-    CONSTRAINT pk_deliveries PRIMARY KEY (deliveriy_id)
+    CONSTRAINT pk_deliveries PRIMARY KEY (delivery_id)
 ) ENGINE=InnoDB;
 
 CREATE TABLE delivery_items(
@@ -424,7 +424,7 @@ CREATE TABLE delivery_items(
     unit_price double(11,2) DEFAULT 0.00,
     total double(11,2) DEFAULT 0.00,
 
-    deliveriy_id INT NOT NULL,
+    delivery_id INT NOT NULL,
     product_id INT NOT NULL,
 
     updated_at DATETIME,

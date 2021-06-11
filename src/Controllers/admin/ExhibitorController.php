@@ -105,7 +105,7 @@ class ExhibitorController extends Controller
                 throw new Exception('No se especifico el número de dias');
             }
 
-            $exhibitor =  $this->exhibitorModel->getAll();
+            $exhibitor =  $this->exhibitorModel->getAllByCompanyId($companyId);
             $exhibitorMonitoring =  $this->exhibitorModel->monitoringByCompanyId($companyId, $body['dateStart'], $body['quantity']);
 
             $res->result = [

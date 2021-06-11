@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    reportOrderList();
+    reportDeliveryList();
 });
 
 function filterByDateChange() {
@@ -20,19 +20,19 @@ function filterByDateChange() {
         filterDayWrapper.classList.remove('hidden');
     }
 
-    reportOrderList();
+    reportDeliveryList();
 }
 
-function reportOrderList(page = 1, limit = 10, search = "") {
-    let reportOrderTable = document.getElementById("reportOrderTable");
+function reportDeliveryList(page = 1, limit = 10, search = "") {
+    let reportDeliveryTable = document.getElementById("reportDeliveryTable");
     let filterByDate = document.querySelector('input[name="filterByDate"]:checked').value;
     let filterYear = document.getElementById("filterYear").value;
     let filterMonth = document.getElementById("filterMonth").value;
     let filterDay = document.getElementById("filterDay").value;
-    
-    if (reportOrderTable) {
-        SnFreeze.freeze({ selector: "#reportOrderTable" });
-        RequestApi.fetch('/admin/report/orderReportTable',{
+
+    if (reportDeliveryTable) {
+        SnFreeze.freeze({ selector: "#reportDeliveryTable" });
+        RequestApi.fetch(`/admin/report/deliveryReportTable`, {
             method: "POST",
             body: {
                 limit,
@@ -44,37 +44,37 @@ function reportOrderList(page = 1, limit = 10, search = "") {
                 filterDay
             }
         })
-            .then((res) => {
+            .then(res => {
                 if (res.success) {
-                    reportOrderTable.innerHTML = res.view;
+                    reportDeliveryTable.innerHTML = res.view;
                 } else {
                     SnModal.error({ title: "Algo salió mal", content: res.message });
                 }
             })
             .finally((e) => {
-                SnFreeze.unFreeze("#reportOrderTable");
+                SnFreeze.unFreeze("#reportDeliveryTable");
             });
     }
 }
 
-function reportOrderSetLoading(state) {
-    let jsReportOrderAction = document.querySelectorAll(".jsReportOrderAction");
+function reportDeliverySetLoading(state) {
+    let jsReportDeliveryAction = document.querySelectorAll(".jsReportDeliveryAction");
     if (state) {
-        if (jsReportOrderAction) {
-            jsReportOrderAction.forEach((item) => {
+        if (jsReportDeliveryAction) {
+            jsReportDeliveryAction.forEach((item) => {
                 item.setAttribute("disabled", "disabled");
             });
         }
     } else {
-        if (jsReportOrderAction) {
-            jsReportOrderAction.forEach((item) => {
+        if (jsReportDeliveryAction) {
+            jsReportDeliveryAction.forEach((item) => {
                 item.removeAttribute("disabled");
             });
         }
     }
 }
 
-function reportOrderCancel(orderId, content = "") {
+function reportDeliveryCancel(deliveryId, content = "") {
     SnModal.confirm({
         title: `¿Estás seguro de anular esta orden ${content}?`,
         content: 'Ingrese el motivo por que desea anular este orden <span class="SnTag warning">Esta acción es irreversible</span>',
@@ -83,46 +83,46 @@ function reportOrderCancel(orderId, content = "") {
         okType: "error",
         cancelText: "No",
         onOk(message) {
-            reportOrderSetLoading(true);
-            RequestApi.fetch("/admin/report/orderCancel", {
+            reportDeliverySetLoading(true);
+            RequestApi.fetch("/admin/report/deliveryCancel", {
                 method: "POST",
                 body: {
-                    orderId: orderId || 0,
+                    deliveryId: deliveryId || 0,
                     message,
                 },
             })
                 .then((res) => {
                     if (res.success) {
                         SnMessage.success({ content: res.message });
-                        reportOrderList();
+                        reportDeliveryList();
                     } else {
                         SnModal.error({ title: "Algo salió mal", content: res.message });
                     }
                 })
                 .finally((e) => {
-                    reportOrderSetLoading(false);
+                    reportDeliverySetLoading(false);
                 });
         },
     });
 }
 
-function reportOrderItem(orderId){
-    reportOrderSetLoading(true);
-    RequestApi.fetch("/admin/report/orderItems", {
+function reportDeliveryItem(deliveryId) {
+    reportDeliverySetLoading(true);
+    RequestApi.fetch("/admin/report/deliveryItems", {
         method: "POST",
         body: {
-            orderId: orderId || 0,
+            deliveryId: deliveryId || 0,
         },
     })
         .then((res) => {
             if (res.success) {
-                SnModal.open('orderItemModalForm');
-                document.getElementById('orderItemModalBody').innerHTML = res.view;
+                SnModal.open('deliveryItemModalForm');
+                document.getElementById('deliveryItemModalBody').innerHTML = res.view;
             } else {
                 SnModal.error({ title: "Algo salió mal", content: res.message });
             }
         })
         .finally((e) => {
-            reportOrderSetLoading(false);
+            reportDeliverySetLoading(false);
         });
 }

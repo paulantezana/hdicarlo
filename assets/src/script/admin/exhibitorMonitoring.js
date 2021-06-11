@@ -45,7 +45,11 @@ function buildMonitoringData(data, filter){
             let classNow = moment().format('YYYY-MM-DD') == dateH.format('YYYY-MM-DD') ? 'MonitoringTable-now' : '';
             headTemplate += `<th class="${classNow}" title="${dateH.format('LL')}">${dateH.format('MMM')}<br>${dateH.format('D')}</th>`;
         }
-        monitoringTableHead.insertAdjacentHTML('beforeend', `<tr><th>Exibidora</th>${headTemplate}</tr>`);
+        monitoringTableHead.insertAdjacentHTML('beforeend', `<tr>
+                                                                <th>Exibidora</th>
+                                                                <th>Cliente</th>
+                                                                ${headTemplate}</tr>
+                                                            `);
     }
 
     // BODY
@@ -58,7 +62,11 @@ function buildMonitoringData(data, filter){
             for (let x = 0; x < datesHead.length; x++) {
                 resTD += `<td id="exhibitor__${exhibitor.exhibitor_id}__${datesHead[x].format('YYYY-MM-DD')}"></td>`;
             }
-            monitoringTableBody.insertAdjacentHTML('beforeend', `<tr><td id="exhibitor_${exhibitor.exhibitor_id}">${exhibitor.code}</td>${resTD}</tr>`);
+            monitoringTableBody.insertAdjacentHTML('beforeend', `<tr>
+                                                                    <td id="exhibitor_${exhibitor.exhibitor_id}">${exhibitor.code}</td>
+                                                                    <td id="exhibitorCustomer_${exhibitor.exhibitor_id}">${exhibitor.customer_social_reason}</td>
+                                                                    ${resTD}
+                                                                </tr>`);
         }
     }
 

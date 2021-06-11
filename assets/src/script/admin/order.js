@@ -200,22 +200,22 @@ function calculateTotalOrder() {
 }
 
 function updateOrderItem(uniqueId){
-    SnModal.open('ordenItemModalForm');
+    SnModal.open('orderItemModalForm');
     let matchProduct = orderItem.find(item => item.uniqueId == uniqueId);
 
     if(matchProduct){
-        document.getElementById('ordenItemUniqueId').value = matchProduct.uniqueId;
-        document.getElementById('ordenItemObservation').value = matchProduct.observation;
-        document.getElementById('ordenItemUnitPrice').value = matchProduct.unitPrice;
+        document.getElementById('orderItemUniqueId').value = matchProduct.uniqueId;
+        document.getElementById('orderItemObservation').value = matchProduct.observation;
+        document.getElementById('orderItemUnitPrice').value = matchProduct.unitPrice;
     }
 }
 
-function ordenItemSubmit(e){
+function orderItemSubmit(e){
     e.preventDefault();
 
-    let uniqueId = document.getElementById('ordenItemUniqueId').value;
-    let observation = document.getElementById('ordenItemObservation').value;
-    let unitPrice = document.getElementById('ordenItemUnitPrice').value;
+    let uniqueId = document.getElementById('orderItemUniqueId').value;
+    let observation = document.getElementById('orderItemObservation').value;
+    let unitPrice = document.getElementById('orderItemUnitPrice').value;
 
     let orderItemObservation = document.getElementById(`orderItemObservation_${uniqueId}`);
     let orderItemUnitPrice = document.getElementById(`orderItemUnitPrice_${uniqueId}`);
@@ -231,7 +231,7 @@ function ordenItemSubmit(e){
             orderItemUnitPrice.innerHTML = orderItem[i].unitPrice;
             orderItemTotal.innerHTML = orderItem[i].total;
 
-            SnModal.close('ordenItemModalForm');
+            SnModal.close('orderItemModalForm');
         }
     });
 

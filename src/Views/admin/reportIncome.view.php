@@ -1,16 +1,16 @@
 <div class="SnContent">
     <div class="SnToolbar">
         <div class="SnToolbar-left">
-            <i class=" fas fa-list-ul SnMr-2"></i> <strong>PEDIDOS</strong>
+            <i class=" fas fa-list-ul SnMr-2"></i> <strong>INGRESOS</strong>
         </div>
         <div class="SnToolbar-right">
-            <div class="SnBtn radio lg icon SnMr-2 jsReportOrderAction" onclick="printArea('reportOrderTable')" title="Imprimir">
+            <div class="SnBtn radio lg icon SnMr-2 jsReportIncomeAction" onclick="printArea('reportIncomeTable')" title="Imprimir">
                 <i class="fas fa-print"></i>
             </div>
-            <div class="SnBtn radio lg icon SnMr-2 jsReportOrderAction" onclick="reportOrderToExcel()" title="Exportar">
+            <div class="SnBtn radio lg icon SnMr-2 jsReportIncomeAction" onclick="reportIncomeToExcel()" title="Exportar">
                 <i class="fas fa-file-excel"></i>
             </div>
-            <div class="SnBtn radio lg icon SnMr-2 jsReportOrderAction" onclick="reportOrderList()" title="Actualizar">
+            <div class="SnBtn radio lg icon SnMr-2 jsReportIncomeAction" onclick="reportIncomeList()" title="Actualizar">
                 <i class="fas fa-sync-alt"></i>
             </div>
         </div>
@@ -47,19 +47,14 @@
                     </div>
                 </div>
             </div>
-            <div id="reportOrderTable" class="SnMb-5"></div>
+            <div id="reportIncomeTable" class="SnMb-5"></div>
+            <div style="height: 320px">
+                <canvas id="reportIncomeChart" width="320" height="320"></canvas>
+            </div>
         </div>
     </div>
 </div>
 
-<script src="<?= URL_PATH ?>/assets/build/script/admin/orderReport.js"></script>
-
-<div class="SnModal-wrapper" data-modal="orderItemModalForm" data-maskclose="false">
-    <div class="SnModal">
-        <div class="SnModal-close" data-modalclose="orderItemModalForm">
-            <i class="fas fa-times"></i>
-        </div>
-        <div class="SnModal-header"><i class="fas fa-directions SnMr-2"></i> Pedido detalle</div>
-        <div class="SnModal-body" id="orderItemModalBody"></div>
-    </div>
-</div>
+<script src="<?= URL_PATH ?>/assets/libraries/js/moment-with-locales.min.js"></script>
+<script src="<?= URL_PATH ?>/assets/libraries/js/chart.min.js"></script>
+<script src="<?= URL_PATH ?>/assets/build/script/admin/incomeReport.js"></script>

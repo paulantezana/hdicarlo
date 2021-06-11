@@ -38,18 +38,28 @@ class Order extends Model
         }
     }
 
-    public function paginateByCompanyId(int $companyId, int $page, int $limit = 10, string $search = '')
+    public function paginateByCompanyId(int $companyId, int $page, int $limit = 10, string $search = '', array $filter = [])
     {
         try {
+            $customQuery = '';
+            if($filter['filterByDate'] == 1){
+                $customQuery = " AND  YEAR(ord.date_of_issue) = '{$filter['filterYear']}'";
+            } else if($filter['filterByDate'] == 2){
+                $customQuery = " AND  DATE_FORMAT(ord.date_of_issue,'%Y-%m') = '{$filter['filterMonth']}'";
+            } else if($filter['filterByDate'] == 3){
+                $customQuery = " AND  DATE(ord.date_of_issue) = '{$filter['filterDay']}'";
+            }
+
             $offset = ($page - 1) * $limit;
-            $totalRows = $this->db->query("SELECT COUNT(*) FROM orders WHERE company_id = '{$companyId}'")->fetchColumn();
+            $totalRows = $this->db->query("SELECT COUNT(*) FROM orders AS ord WHERE ord.company_id = {$companyId} {$customQuery}")->fetchColumn();
             $totalPages = ceil($totalRows / $limit);
 
-            $stmt = $this->db->prepare("SELECT ord.*, ex.code as exhibitor_code, cus.social_reason AS customer_social_reason
+            $stmt = $this->db->prepare("SELECT ord.*, ex.code as exhibitor_code, cus.social_reason AS customer_social_reason, user.user_name
                                         FROM orders AS ord 
                                         INNER JOIN exhibitors AS ex ON ord.exhibitor_id = ex.exhibitor_id
                                         INNER JOIN customers AS cus ON ex.customer_id = cus.customer_id
-                                        WHERE ord.company_id = :company_id
+                                        INNER JOIN users AS user ON ord.user_id = user.user_id
+                                        WHERE ord.company_id = :company_id {$customQuery}
                                         LIMIT $offset, $limit");
             // $stmt->bindValue(':search', '%' . $search . '%');
             $stmt->bindValue(':company_id', $companyId);

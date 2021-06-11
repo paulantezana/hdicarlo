@@ -81,30 +81,30 @@
 </script>
 <script src="<?= URL_PATH ?>/assets/build/script/admin/order.js"></script>
 
-<div class="SnModal-wrapper" data-modal="ordenItemModalForm">
+<div class="SnModal-wrapper" data-modal="orderItemModalForm">
     <div class="SnModal">
-        <div class="SnModal-close" data-modalclose="ordenItemModalForm">
+        <div class="SnModal-close" data-modalclose="orderItemModalForm">
             <i class="fas fa-times"></i>
         </div>
         <div class="SnModal-header"><i class="fas fa-network-wired SnMr-2"></i> Producto</div>
         <div class="SnModal-body">
-            <form action="" class="SnForm" novalidate id="ordenItemForm" onsubmit="ordenItemSubmit(event)">
-                <input type="hidden" class="SnForm-control" id="ordenItemUniqueId">
+            <form action="" class="SnForm" novalidate id="orderItemForm" onsubmit="orderItemSubmit(event)">
+                <input type="hidden" class="SnForm-control" id="orderItemUniqueId">
                 <div class="SnForm-item required">
-                    <label for="ordenItemObservation" class="SnForm-label">Observacion</label>
+                    <label for="orderItemObservation" class="SnForm-label">Observacion</label>
                     <div class="SnControl-wrapper">
                         <i class="far fa-file-code SnControl-prefix"></i>
-                        <input type="text" class="SnForm-control SnControl" id="ordenItemObservation" required>
+                        <input type="text" class="SnForm-control SnControl" id="orderItemObservation" required>
                     </div>
                 </div>
                 <div class="SnForm-item required">
-                    <label for="ordenItemUnitPrice" class="SnForm-label">Precio</label>
+                    <label for="orderItemUnitPrice" class="SnForm-label">Precio</label>
                     <div class="SnControl-wrapper">
                         <i class="fas fa-coins SnControl-prefix"></i>
-                        <input type="number" min="0" class="SnForm-control SnControl" id="ordenItemUnitPrice" required>
+                        <input type="number" min="0" class="SnForm-control SnControl" id="orderItemUnitPrice" required>
                     </div>
                 </div>
-                <button type="submit" class="SnBtn lg primary block" id="ordenItemFormSubmit"><i class="fas fa-save SnMr-2"></i>Guardar</button>
+                <button type="submit" class="SnBtn lg primary block" id="orderItemFormSubmit"><i class="fas fa-save SnMr-2"></i>Guardar</button>
             </form>
         </div>
     </div>
