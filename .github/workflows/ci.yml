@@ -52,7 +52,7 @@ jobs:
         protocol: ftps
         port: 21 # todo replace with your web hosts ftps port
         timeout: 3000000
-        server-dir: ./subdomain/demo
+        server-dir: ./subdomain/demo/
         exclude: |
           **/.git*
           **/.git*/**
