@@ -1,0 +1,77 @@
+name: 🚀 Deploy MASTER on push
+
+on:
+  push:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    name: 🚚 Unit test and install
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v3
+
+    # - name: Set up PHP
+    #   uses: shivammathur/setup-php@v2
+    #   with:
+    #     php-version: '8.2'
+
+    # - name: Update Composer
+    #   run: composer self-update
+
+    # - name: Install Composer dependencies
+    #   uses: php-actions/composer@run-as-current-user
+    #   with:
+    #     version: latest
+    #     command: install
+    #     interaction: no
+    #     dev: yes
+    #     progress: no
+    #     quiet: no
+    #     args: --ignore-platform-req=ext-zip
+
+    # - name: PHPUnit Tests
+    #   uses: php-actions/phpunit@composer-version--user
+    #   env:
+    #     TEST_NAME: Scarlett
+    #   with:
+    #     bootstrap: vendor/autoload.php
+    #     configuration: phpunit.xml
+
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_PAUL_DEMO_HOST }}
+        username: ${{ secrets.FTP_PAUL_DEMO_USER }}
+        password: ${{ secrets.FTP_PAUL_DEMO_PASSWORD }}
+        protocol: ftps
+        port: 21 # todo replace with your web hosts ftps port
+        timeout: 3000000
+        server-dir: ./subdomain/demo
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/vendor/**
+          **/tests/**
+          **/docs/**
+          **/cypress/**
+
+  # ui-chrome-tests:
+  #   name: 🧪 Cypress chrome
+  #   runs-on: ubuntu-latest
+  #   needs: [install]
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: Cypress run
+  #       uses: cypress-io/github-action@v6
+  #       with:
+  #         browser: chrome

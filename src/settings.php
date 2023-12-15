@@ -1,6 +1,22 @@
 <?php
 date_default_timezone_set('America/Lima');
 
+function getEnvValueByKey()
+{
+  $file = new SplFileObject(ROOT_DIR . '/.env');
+  $data = [];
+
+  while (!$file->eof()) {
+    $line = $file->fgets();
+    if (strlen($line) > 3) {
+      list($key, $value) = explode("=", $line, 2);
+      $data[trim($key)] = trim($value ?? '');
+    }
+  }
+
+  return $data;
+}
+
 function exceptions_error_handler($severity, $message, $filename, $lineno)
 {
   $dateTime =  date('Y-m-d H:i:s');
@@ -47,6 +63,8 @@ define('APP_COLOR', '#364EC7');
 define('APP_DEV',false);
 
 define('FILE_PATH', '/files');
+
+define('APP_ENV', getEnvValueByKey());
 
 define('GOOGLE_API_KEY','AIzaSyAG7pSRfqKAObS76qjyyIeuImkVcooIt2I');
 // define('GOOGLE_RE_SECRET_KEY','6LfcgMQZAAAAANIo0O9NzC5bJyPowYVt9gQMyqyo');
