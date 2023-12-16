@@ -1,0 +1,1 @@
+{"version":1,"defects":{"ControllerTest::testRenderWithoutTemplate":5,"ControllerTest::testRenderWithTemplate":5},"times":{"ControllerTest::testRenderWithoutTemplate":0.007,"ControllerTest::testRenderWithTemplate":0.002,"ModelTest::testGetAll":0.005,"ModelTest::testSearchBy":0.003,"ModelTest::testUpdateById":0.005,"RouterTest::testAdminRouteLoggedInUser":0.003}}

@@ -13,11 +13,11 @@ class RouterTest extends TestCase
         session_start();
 
         // Mock URL and SESSION data for an admin route
-        define('URL', '/admin');
-        define('SESS_KEY', 'user_session_key');
-        define('SESS_USER', 'user');  // Definir SESS_USER
-        define('CONTROLLER_PATH', __DIR__ . '/../src/Controllers');  // Definir CONTROLLER_PATH
-        define('MODEL_PATH', __DIR__ . '/../src/Models');  // Definir MODEL_PATH
+        $this->defineConstant('URL', '/admin');
+        $this->defineConstant('SESS_KEY', 'user_session_key');
+        $this->defineConstant('SESS_USER', 'user');  // Definir SESS_USER
+        $this->defineConstant('CONTROLLER_PATH', __DIR__ . '/../src/Controllers');  // Definir CONTROLLER_PATH
+        $this->defineConstant('MODEL_PATH', __DIR__ . '/../src/Models');  // Definir MODEL_PATH
 
         $_SESSION[SESS_KEY] = 1;
         $_SESSION[SESS_USER] = ['company_id' => 1];
@@ -46,5 +46,12 @@ class RouterTest extends TestCase
         $property->setAccessible(true);
 
         return $property->getValue($instance);
+    }
+
+    private function defineConstant($name, $value)
+    {
+        if (!defined($name)) {
+            define($name, $value);
+        }
     }
 }

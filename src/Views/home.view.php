@@ -11,6 +11,6 @@
 
 <div class="HomeBanner" style="background: url(<?= URL_PATH ?>/assets/images/homeBanner.jpg) no-repeat center/cover;">
     <div class="HomeBanner-content">
-        
+        <?= $parameter['name'] ?? '' ?>
     </div>
 </div>
