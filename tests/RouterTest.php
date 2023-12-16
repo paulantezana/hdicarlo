@@ -3,6 +3,7 @@
 use PHPUnit\Framework\TestCase;
 
 require_once(__DIR__ . '/../src/route.php');
+require_once(__DIR__ . '/../src/Core/Model.php');
 require_once(__DIR__ . '/../src/Core/Controller.php');
 
 class RouterTest extends TestCase
